@@ -1,0 +1,10 @@
+Recorda que podes identificar la copia en el filesystem viendo el archivo standalone.xml (o domain, según sea el caso).
+Ej:
+ 
+    <deployments>
+        <deployment name="wildfly-helloworld" runtime-name="wildfly-helloworld">
+            <content sha1="32e9f60c8b685b0822ba5f1b5e33c0ff660297cf"/>
+        </deployment>
+    </deployments>
+ 
+La copia del war se encuentra en $JBOSS_HOME/data/content/32/e9f60c8b685b0822ba5f1b5e33c0ff660297cf/content

@@ -1,0 +1,32 @@
+En la capa de presentacion
+
+En el log de jboss podemos ir viendo el despliegue.
+/var/log/jboss-eap/console.log
+
+
+cp -p /var/tmp/deployments/* /opt/liferay/deploy
+
+ls -la /opt/liferay/deploy
+
+Despues de un tiempo el el war no se vera en esta ruta, porque el lo descomprime y lo distribuye.
+
+
+
+En la capa de Aplicaciones
+
+
+Por cada .war que tengamos se va ejecutando 
+
+En el log de jboss podemos ir viendo el despliegue.
+/var/log/jboss-eap/console.log
+
+ls -l /var/tmp/deployments/
+
+/opt/jboss/jboss-eap-6.2/bin/jboss-cli.sh controller=${HOSTNAME} --connect \
+    --commands="undeploy ARCHIVO.war --all-relevant-server-groups"
+
+
+
+/opt/jboss/jboss-eap-6.2/bin/jboss-cli.sh controller=${HOSTNAME} --connect \
+     --commands="deploy /RUTA/ARCHIVO.war --server-groups=portalappclusprd-group"  
+
