@@ -141,7 +141,10 @@ Como vemos inicio bien, verificamos los puertos. Manda el proceso de Background 
 
 Podemos observar que los siguientes puertos fueron aperturados por JBoss 9999, 8080, 4447 y 9990.
 
-Creamos el usuario administrado para el JBoss::
+Creamos el usuario administrado para el JBoss
++++++++++++++++++++++++++++++++++++++++++++++
+
+::
 
 	# /opt/jboss-eap-6.4/bin/add-user.sh 
 
