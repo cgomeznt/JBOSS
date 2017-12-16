@@ -3,15 +3,17 @@ http://www.mastertheboss.com/eBooks/eap-linux.pdf
 
 Configuraciones de las variables JBOSS_HOME JAVA_HOME
 
--Djboss.bind.address=192.168.1.20 -Djboss.bind.address.management=192.168.1.20
+-Djboss.bind.address=192.168.1.30 -Djboss.bind.address.management=192.168.1.30
 
-JAVA_OPTS="$JAVA_OPTS-Dcom.sun.management.jmxremote, -Dcom.sun.management.jmxremote.port=9999 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false
+JAVA_OPTS="$JAVA_OPTS -Dcom.sun.management.jmxremote, -Dcom.sun.management.jmxremote.port=9999 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false
 
 ./standalone.sh -c standalone-full.xml -bmanagement 192.168.1.20
 
+./standalone.sh -Djboss.bind.address.management=192.168.1.20
+
 ./standalone.sh --server-config=standalone-full.xml -b 192.168.1.20 -Djboss.bind.address.management=192.168.1.20
 
-bin/standalone.sh -Djboss.bind.address.management=192.168.1.20
+./standalone.sh --server-config=standalone-full.xml -Dcom.sun.management.jmxremote, -Dcom.sun.management.jmxremote.port=9999 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false
 
 
 service:jmx:remoting-jmx://192.168.1.20:9999

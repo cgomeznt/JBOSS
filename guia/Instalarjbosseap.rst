@@ -21,7 +21,7 @@ Verificamos la version.::
 	Java(TM) SE Runtime Environment (build 1.8.0_101-b13)
 	Java HotSpot(TM) 64-Bit Server VM (build 25.101-b13, mixed mode)
 
-Configuramos las variables de entorno JAVA_HOME , JBOSS_HOME y PATH, El java se instalo en "/usr/java/jdk1.8.0_101". ::
+Configuramos las variables de entorno JAVA_HOME , JBOSS_HOME y PATH, El java se instalo en "/usr/java/jdk1.8.0_101".::
 
 	# vi /etc/profile
 		# agregamos estas lineas y ya queda para todos los perfiles de usuario
@@ -140,6 +140,37 @@ Como vemos inicio bien, verificamos los puertos. Manda el proceso de Background 
 	tcp        0      0 ::1:25                      :::*                        LISTEN 
 
 Podemos observar que los siguientes puertos fueron aperturados por JBoss 9999, 8080, 4447 y 9990.
+
+Creamos el usuario administrado para el JBoss::
+
+	# /opt/jboss-eap-6.4/bin/add-user.sh 
+
+	¿Qué tipo de usuario desea agregar? 
+	 a) Usuario de administración (mgmt-users.properties) 
+	 b) Usuario de la aplicación (application-users.properties)
+	(a): a
+
+	Introduzca los detalles del nuevo usuario a agregar.
+	Usando el dominio 'ManagementRealm' tal como se descubre en los archivos de propiedades existentes.
+	Nombre del usuario : admin
+	El nombre de usuario 'admin' es fácil de adivinar
+	¿Está seguro de que quiere agregar el usuario 'admin' si/no? y
+	Los requerimientos de la contraseña se listan a continuación. Para modificar estas restricciones modifique el archivo de configuración add-user.properties.
+	 - La contraseña no debe ser uno de los siguientes valores restringidos {root, admin, administrator}
+	 - La contraseña tiene que tener por lo menos 8 caracteres, 1 caracteres alfabéticos, 1 dígito(s), 1 símbolos que no sean alfanuméricos
+	 - La contraseña tiene que ser diferente del nombre de usuario
+	Contraseña : Venezuela.21
+	Reintroduzca la contraseña : Venezuela.21
+	¿ A qué grupos quiere que este usuario pertenezca? (introduzca una lista o deje en blanco para ninguno)[  ]: 
+	A punto de agregar el usuario 'admin' para el dominio 'ManagementRealm'
+	¿Esto es correcto? Sí/No? y
+	Agregar el usuario 'admin' al archivo '/opt/jboss-eap-6.4/standalone/configuration/mgmt-users.properties'
+	Se agregó el usuario 'admin' con grupos ' al archivo '/opt/jboss-eap-6.4/standalone/configuration/mgmt-groups.properties'
+	¿Este nuevo usuario se va a utilizar para que un proceso AS se conecte a otro proceso AS?  
+	 por ejemplo: para que un controlador host de esclavos se conecte al maestro o para una conexión remota para llamadas EJB de servidor a servidor.
+	¿si/no? n
+
+Cuando culminemos recuerde que puede probar la  url Administrativa por el puerto 9990 http://ipserver:9990
 
 
 Configuramos el JBoss como un servicio
@@ -294,5 +325,36 @@ Reiniciamos el JBoss y nuevamente consultamos los puertos.::
 Ahora nos vamos a un navegador y probamos.
 
 .. figure:: ../images/01.png
+
+Por defecto el archivo de configuracion es el "/opt/jboss-eap-6.4/standalone/configuration/standalone.xml" pero eso lo podemos cambiar cuando ejecutamos el script standalone.sh, coloquemos el archivo "/opt/jboss-eap-6.4/standalone/configuration/standalone.xml" en su forma original.::
+
+	# /opt/jboss-eap-6.4/bin/standalone.sh -Djboss.bind.address=192.168.1.30 -Djboss.bind.address.management=192.168.1.30
+
+Tabien podemos crear nuestro xml de configuracion en "/opt/jboss-eap-6.4/standalone/configuration/standalone.propio.xml" y llamarlo.::
+
+	# /opt/jboss-eap-6.4/bin/standalone.sh -c standalone.propio.xml
+
+o asi.::
+
+	# /opt/jboss-eap-6.4/bin/standalone.sh --server-config=standalone.propio.xml
+
+Ya estamos listos, pero dejo estas otras combinaciones.::
+
+	Configuraciones de las variables JBOSS_HOME JAVA_HOME
+
+	-Djboss.bind.address=192.168.1.30 -Djboss.bind.address.management=192.168.1.30
+
+	JAVA_OPTS="$JAVA_OPTS -Dcom.sun.management.jmxremote, -Dcom.sun.management.jmxremote.port=9999 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false
+
+	./standalone.sh -c standalone-full.xml -bmanagement 192.168.1.20
+
+	./standalone.sh -Djboss.bind.address.management=192.168.1.20
+
+	./standalone.sh --server-config=standalone-full.xml -b 192.168.1.20 -Djboss.bind.address.management=192.168.1.20
+
+	./standalone.sh --server-config=standalone-full.xml -Dcom.sun.management.jmxremote, -Dcom.sun.management.jmxremote.port=9999 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false
+
+
+	service:jmx:remoting-jmx://192.168.1.20:9999
 
 
