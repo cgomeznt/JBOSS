@@ -48,7 +48,7 @@ Creamos el usuario y grupo
 	# groupadd jboss
 	# adduser -s /bin/bash -g jboss jboss
 
-Podemos editar el .bash_profile para agregar las variables, recordemos que no es necesario porque ya lo configuramos en /etc/profile
+Podemos editar el .bash_profile para agregar las variables, recordemos que no es necesario porque ya lo configuramos en /etc/profile::
 
 	# vi /home/jboss/.bash_profile
 		export JAVA_HOME=/usr/java/jdk1.8.0_101
