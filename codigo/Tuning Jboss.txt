@@ -1,0 +1,62 @@
+"-Xms128m -Xmx1024m -XX:PermSize=256m -XX:MaxPermSize=256m -Xloggc:$CATALINA_HOME/logs/gc.log -XX:+UseParallelGC -XX:+PrintHeapAtGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps"
+
+
+
+
+JAVA_OPTS: -server -Xms128m -Xmx512m -Dsun.rmi.dgc.client.gcInterval=1800000 
+             -Dsun.rmi.dgc.server.gcInterval=1800000 -Dprogram.name=run.sh
+
+JAVA_OPTS="-server -Xms512m -Xmx512m -XX:MaxPermSize=256m -XX:+UseParallelGC -Dsun.rmi.dgc.client.gcInterval=1800000 -Dsun.rmi.dgc.server.gcInterval=1800000 -Djava.net.preferIPv4Stack=true"
+JAVA_OPTS="$JAVA_OPTS -Djboss.modules.system.pkgs=$JBOSS_MODULES_SYSTEM_PKGS -Djava.awt.headless=true"
+JAVA_OPTS="$JAVA_OPTS -Djboss.modules.policy-permissions=true"
+JAVA_OPTS="$JAVA_OPTS -Dfile.encoding=UTF-8 -Duser.timezone=America/La_Paz"
+
+
+-server -XX:+HeapDumpOnOutOfMemoryError -Xms512m -Xmx512m -XX:NewSize=128m -XX:MaxNewSize=128m
+
+
+JBoss tuning tip 1: Tune the garbage collector
+===============================================
+
+One strength of the J2SE platform is that it shields the developer from the complexity of memory allocation. However, once garbage collection is the principal bottleneck, it is worth understanding some aspects of this hidden implementation
+
+It's demonstrated that an application that spends 10% of its time in garbage collection can lose 75% of its throughput when scaled out to 32 processors
+(http://java.sun.com/javase/technologies/hotspot/gc/gc_tuning_6.html)
+
+
+
+JBoss tuning tip 2: Set -Xms and -Xmx to the same value
+=======================================================
+
+By default, the virtual machine grows or shrinks the heap at each collection to try to keep the proportion of free space to live objects at each collection within a specific range. Setting -Xms and -Xmx to the same value. This increase predictability by removing the most important sizing decision from the virtual machine.
+
+
+
+JBoss tuning tip 3: Use server VM
+==================================
+
+The server JVM is better suited to longer running applications. To enable it simply set the -server option on the command line.
+
+
+JBoss tuning tip 4:  Turn off distributed gc
+===============================================
+
+The RMI system provides a reference counting distributed garbage collection algorithm. This system works by having the server keep track of which clients have requested access to remote objects running on the server. When a reference is made, the server marks the object as "dirty" and when a client drops the reference, it is marked as being "clean.". However this system is quite expensive and by default runs every minute.
+
+Set it to run every 30 minute at least
+
+-Dsun.rmi.dgc.client.gcInterval=1800000
+-Dsun.rmi.dgc.server.gcInterval=1800000
+JBoss tuning tip 6:  Turn on parallel gc
+
+If you have multiple proessors you can do your garbage collection with multiple threads. By default the parallel collector runs a collection thread per processor, that is if you have an 8 processor box then you'll garbage collect your data with 8 threads. In order to turn on the parallel collector use the flag -XX:+UseParallelGC. You can also specify how many threads you want to dedicate to garbage collection using the flag -XX:ParallelGCThreads=8.
+
+JBoss tuning tip 7: Don't use Huge heaps, use a cluster
+========================================================
+
+More JVMs/smaller heaps can outperform fewer JVMs/Larger Heaps. So instead of huge heaps, use additional server nodes. Set up a JBoss cluster and balance work between nodes.
+
+
+JBoss tuning tip 8: Don't choose an heap larger then 70% of your OS memory
+===========================================================================
+Choose a maximum heap size not more then 70% of the memory to avoid excessive page faults and thrashing. 
