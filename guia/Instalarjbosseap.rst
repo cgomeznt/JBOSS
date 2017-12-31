@@ -175,6 +175,7 @@ Creamos el usuario administrado para el JBoss
 
 Cuando culminemos recuerde que puede probar la  url Administrativa por el puerto 9990 http://ipserver:9990
 
+En los archivo "/opt/jboss-eap-6.4/standalone/configuration/mgmt-users.properties" y "/opt/jboss-eap-6.4/domain/configuration/mgmt-users.properties" se guardan los usuarios administradores
 
 Configuramos el JBoss como un servicio
 ++++++++++++++++++++++++++++++++++++++
