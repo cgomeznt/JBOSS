@@ -1,0 +1,48 @@
+
+
+Despliegue EAR en JBoss EAp 7 Plataforma AWS:
+
+
+1. Subir el artefacto .EAR a los servidores con el siguiente comando:
+
+Nodo 1:
+
+scp -i /home/eacosta/AWS_POC_BiceVida/kp_bicevidalabs_pocvulcano_EAP7.pem /home/eacosta/AWS_POC_BiceVida/CONSIS.ear ec2-user@54.218.251.132:/home/ec2-user
+
+Nodo 2:
+
+scp -i /home/eacosta/AWS_POC_BiceVida/kp_bicevidalabs_pocvulcano_EAP7.pem CONSIS.ear ec2-user@54.202.35.26:/home/ec2-user
+
+
+2. Una vez estén los artefactos en los servidores conectarse con el sigueinte comando:
+
+Nodo 1: 
+
+ssh -i /home/eacosta/AWS_POC_BiceVida/kp_bicevidalabs_pocvulcano_EAP7.pem ec2-user@54.218.251.132
+
+Nodo 2:
+
+ssh -i /home/eacosta/AWS_POC_BiceVida/kp_bicevidalabs_pocvulcano_EAP7.pem ec2-user@54.202.35.26
+
+3. Al estar conectados cambiaremos el dueño del artefacto EAR y lo moveremos a la ruta /opt/EAP-7.0
+
+sudo chown jboss:jboss CONSIS.ear
+
+sudo cp CONSIS.ear /opt/EAP-7.0
+
+4. Luego nos cambiamos al usuario JBoss:
+
+sudo su - jboss
+
+5. Vamos a la ruta /opt/EAP-7.0/standalone/deployment y copiamos el EAR en esta ruta:
+
+cp ../../CONSIS.ear .
+
+6. Hacemos ls -ltr para ver si ya se ha creado un archivo con extensión .deploy que confirma que el despliegue fue correcto.
+
+
+
+
+
+
+
