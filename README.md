@@ -7,4 +7,5 @@
 * [Configurar un virtualhost](guia/virtualhost.rst)
 * [Configurar Redireccionamiento](guia/redireccionamiento.rst)
 * [Crear una APP Web con Java Servlet](guia/appWebConServlet.rst)
+* [Configurar y probar un Datasource ](guia/createstdatasource.rst)
 
