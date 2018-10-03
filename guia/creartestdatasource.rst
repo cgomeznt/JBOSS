@@ -13,7 +13,7 @@ https://www.oreilly.com/library/view/jboss-at-work/0596007345/ch04.html
 
 
 
-Instalación rapida de Jboss
+Instalación rápida de Jboss
 ++++++++++++++++++++++++++++
 
 Instalar el Jboss EAP 6.4.::
@@ -35,7 +35,7 @@ Iniciamos y verificamos que no tengamos errores e ingrasamos al URL administrati
 Para MySQL
 +++++++++++
 
-Hacemos primero una configuración que es igual para todos pero vamos a comenzar con MySQL, creamos los directorios en donde estara el driver de MySQL y el archivo module.xml que cargara dicho driver.::
+Hacemos primero una configuración que es igual para todos pero vamos a comenzar con MySQL, creamos los directorios en donde estará el driver de MySQL y el archivo module.xml que cargara dicho driver.::
 
 	# mkdir -p /opt/jboss-eap-6.4/modules/com/mysql/main
 
@@ -97,7 +97,7 @@ Detenemos el Jboss y lo iniciamos nuevamente, no se deben visualizar errores en 
 Para Oracle
 +++++++++++++++
 
-Hacemos primero una configuración que es igual para todos y ahora para Oracle, creamos los directorios en donde estara el driver de Oracle y el archivo module.xml que cargara dicho driver.::
+Hacemos primero una configuración que es igual para todos y ahora para Oracle, creamos los directorios en donde estará el driver de Oracle y el archivo module.xml que cargara dicho driver.::
 
 	# mkdir -p /opt/jboss-eap-6.4/modules/com/oracle/main
 
@@ -161,7 +161,7 @@ Detenemos el Jboss y lo iniciamos nuevamente, no se deben visualizar errores en 
 .. figure:: ../images/datasource/06.png
 
 
-Test del datasource con un codigo JSP
+Test del datasource con un código JSP
 +++++++++++++++++++++++++++++++++++++
 
 Creamos un directorio de trabajo.::
@@ -212,7 +212,7 @@ Creamos el web.xml.::
 	
 	</web-app>
 
-Creamos el WEB-INF/jboss-web.xml. Este contenido tambien lo pudieramos colocar en el WEB-INF/web.xml y nos evitamos crear este archivo::
+Creamos el WEB-INF/jboss-web.xml. Este contenido también lo pudiéramos colocar en el WEB-INF/web.xml y nos evitamos crear este archivo::
 
 	# vi WEB-INF/jboss-web.xml
 
