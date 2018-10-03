@@ -32,7 +32,10 @@ Iniciamos y verificamos que no tengamos errores e ingrasamos al URL administrati
 
 	# /opt/jboss-eap-6.4/bin/standalone.sh
 
-Hacemos primero una configuración que es igual para todos pero vamos a comenzar con MySQL, creamos los directorios en donde estara el driver de MySQL y el archivo module.xml que cargara dicho driver
+Para MySQL
++++++++++++
+
+Hacemos primero una configuración que es igual para todos pero vamos a comenzar con MySQL, creamos los directorios en donde estara el driver de MySQL y el archivo module.xml que cargara dicho driver.::
 
 	# mkdir -p /opt/jboss-eap-6.4/modules/com/mysql/main
 
@@ -90,6 +93,72 @@ Detenemos el Jboss y lo iniciamos nuevamente, no se deben visualizar errores en 
 
 .. figure:: ../images/datasource/04.png
 
+
+Para Oracle
++++++++++++++++
+
+Hacemos primero una configuración que es igual para todos y ahora para Oracle, creamos los directorios en donde estara el driver de Oracle y el archivo module.xml que cargara dicho driver.::
+
+	# mkdir -p /opt/jboss-eap-6.4/modules/com/oracle/main
+
+Copiamos el driver de Oracle en la ruta creada.::
+
+	# # cp ojdbc6.jar /opt/jboss-eap-6.4/modules/com/oracle/main
+
+Creamos el archivo modules.xml con el siguiente contenido.::
+
+	# vi /opt/jboss-eap-6.4/modules/com/oracle/main/module.xml
+
+	<module xmlns="urn:jboss:module:1.1" name="com.oracle">
+	  <resources>
+	    <resource-root path="ojdbc6.jar"/>
+	  </resources>
+	  <dependencies>
+	    <module name="javax.api"/>
+	    <module name="javax.transaction.api"/>
+	  </dependencies>
+	</module>
+
+Modificamos el archivo standalone.xml para agregar la configuración del Datasource.::
+
+	# vi /opt/jboss-eap-6.4/standalone/configuration/standalone.xml
+	    [...]
+	<datasources>
+	  <datasource jndi-name="java:/OracleDS" pool-name="OracleDS">
+	    <connection-url>jdbc:oracle:thin:@192.168.1.53:1521:qa12c</connection-url>
+	    <driver>oracle</driver>
+	    <security>
+	      <user-name>QA_RRGTGU_V138</user-name>
+	      <password>QA_RRGTGU_V138</password>
+	    </security> 
+	    <validation>
+	      <valid-connection-checker class-name="org.jboss.jca.adapters.jdbc.extensions.oracle.OracleValidConnectionChecker"></valid-connection-checker>
+	      <stale-connection-checker class-name="org.jboss.jca.adapters.jdbc.extensions.oracle.OracleStaleConnectionChecker"></stale-connection-checker>
+	      <exception-sorter class-name="org.jboss.jca.adapters.jdbc.extensions.oracle.OracleExceptionSorter"></exception-sorter>
+	    </validation>
+	  </datasource>
+	  <drivers>
+	    <driver name="oracle" module="com.oracle">
+	      <xa-datasource-class>oracle.jdbc.xa.client.OracleXADataSource</xa-datasource-class>
+	      <!--xa-datasource-class>oracle.jdbc.driver.OracleDriver</xa-datasource-class-->
+	    </driver>
+	  </drivers>
+	</datasources>
+	    [...]
+
+Detenemos el Jboss y lo iniciamos nuevamente, no se deben visualizar errores en el LOG, hacemos un test de Conexión en la URL administrativa.
+
+
+.. figure:: ../images/datasource/01.png
+
+
+.. figure:: ../images/datasource/02.png
+
+
+.. figure:: ../images/datasource/05.png
+
+
+.. figure:: ../images/datasource/06.png
 
 
 Creamos un directorio de trabajo.::
