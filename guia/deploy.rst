@@ -40,4 +40,17 @@ Si en la ruta /opt/jboss-eap-6.4/standalone/deployments/ al archivo sample.war.d
 
 
 
+Si le volmemos a colocar el deploy, pues se despliega la aplicación nuevamente.::
+
+	# mv /opt/jboss-eap-6.4/standalone/deployments/sample.war.undeployed /opt/jboss-eap-6.4/standalone/deployments/sample.war.deployed 
+
+	# 12:02:55,836 INFO  [org.jboss.as.server.deployment] (MSC service thread 1-1) JBAS015876: Iniciando la implementación de sample.war" (runtime-name: "sample.war")
+	12:02:56,203 INFO  [org.jboss.web] (ServerService Thread Pool -- 78) JBAS018210: Registrar el contexto web: /sample
+	12:02:56,432 INFO  [org.jboss.as.server] (DeploymentScanner-threads - 2) JBAS015859: Implementado "sample.war" (runtime-name : "sample.war")
+
+	# ls /opt/jboss-eap-6.4/standalone/deployments/
+	README.txt  sample.war  sample.war.deployed
+
+
+
 
