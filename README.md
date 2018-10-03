@@ -8,4 +8,5 @@
 * [Configurar Redireccionamiento](guia/redireccionamiento.rst)
 * [Crear una APP Web con Java Servlet](guia/appWebConServlet.rst)
 * [Configurar y probar un Datasource ](guia/creartestdatasource.rst)
+* [Desplegar un EAR o WAR ](guia/deploy.rst)
 
