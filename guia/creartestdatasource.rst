@@ -3,15 +3,94 @@ Configurar y probar Datasource
 
 Lo primero es leer la documentación oficial de Jboss eap.
 
+https://access.redhat.com/documentation/en-us/jboss_enterprise_application_platform/6/html/administration_and_configuration_guide/example_oracle_datasource
+
+https://stackoverflow.com/questions/12049882/jboss-7-oracle-datasource-configuration
+
 https://developer.jboss.org/wiki/ConfiguracionDeDATASOURCEEnJbossAS7
 
 https://www.oreilly.com/library/view/jboss-at-work/0596007345/ch04.html
 
-https://access.redhat.com/documentation/en-us/jboss_enterprise_application_platform/6/html/administration_and_configuration_guide/example_oracle_datasource
 
-I
+
 Iniciar el laboratorio
 +++++++++++++++++++++++
+
+Instalar el Jboss EAP 6.4.::
+
+	# unzip jboss-eap-6.4.0.zip -d /opt
+
+Creamos el usuario admin.::
+
+	# /opt/jboss-eap-6.4/bin/add-user.sh
+
+Editamos el el archivo standalone.xml para que Jboss escuche por la interfaz de red que necesitemos.::
+
+	# sed -i -e 's/127.0.0.1/192.168.1.210/g' /opt/jboss-eap-6.4/standalone/configuration/standalone.xml
+
+Iniciamos y verificamos que no tengamos errores e ingrasamos al URL administrativo y con el usuario que creamos http://192.168.1.210:8080/ .::
+
+	# /opt/jboss-eap-6.4/bin/standalone.sh
+
+Hacemos primero una configuración que es igual para todos pero vamos a comenzar con MySQL, creamos los directorios en donde estara el driver de MySQL y el archivo module.xml que cargara dicho driver
+
+	# mkdir -p /opt/jboss-eap-6.4/modules/com/mysql/main
+
+Copiamos el driver de MySQL en la ruta creada.::
+
+	# cp mysql-connector-java-5.1.47/mysql-connector-java-5.1.47.jar /opt/jboss-eap-6.4/modules/com/mysql/main
+
+Creamos el archivo modules.xml con el siguiente contenido.::
+
+	# vi /opt/jboss-eap-6.4/modules/com/mysql/main/module.xml
+
+	<?xml version="1.0" encoding="UTF-8"?>
+	<module xmlns="urn:jboss:module:1.0" name="com.mysql">
+	  <resources>
+	    <resource-root path="mysql-connector-java-5.1.47.jar"/>
+	  </resources>
+	  <dependencies>
+	    <module name="javax.api"/>
+	    <module name="javax.transaction.api"/>
+	  </dependencies>
+	</module>
+
+Modificamos el archivo standalone.xml para agregar la configuración del Datasource.::
+
+	# vi /opt/jboss-eap-6.4/standalone/configuration/standalone.xml
+	    [...]
+            <datasources>
+                <datasource jndi-name="java:/TestDB" pool-name="TestDB" enabled="true" use-java-context="true">
+                    <connection-url>jdbc:mysql://localhost:3306/javatest</connection-url>
+                    <driver>com.mysql</driver>
+                    <security>
+                        <user-name>javauser</user-name>
+                        <password>javadude</password>
+                    </security>
+                </datasource>
+                <drivers>
+                    <driver name="com.mysql" module="com.mysql">
+                        <xa-datasource-class>com.mysql.jdbc.Driver</xa-datasource-class>
+                    </driver>
+                </drivers>
+            </datasources>
+	    [...]
+
+Detenemos el Jboss y lo iniciamos nuevamente, no se deben visualizar errores en el LOG, hacemos un test de Conexión en la URL administrativa.
+
+
+.. figure:: ../images/datasource/01.png
+
+
+.. figure:: ../images/datasource/02.png
+
+
+.. figure:: ../images/datasource/03.png
+
+
+.. figure:: ../images/datasource/04.png
+
+
 
 Creamos un directorio de trabajo.::
 
