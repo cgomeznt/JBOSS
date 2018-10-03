@@ -13,8 +13,8 @@ https://www.oreilly.com/library/view/jboss-at-work/0596007345/ch04.html
 
 
 
-Iniciar el laboratorio
-+++++++++++++++++++++++
+Instalación rapida de Jboss
+++++++++++++++++++++++++++++
 
 Instalar el Jboss EAP 6.4.::
 
@@ -161,6 +161,9 @@ Detenemos el Jboss y lo iniciamos nuevamente, no se deben visualizar errores en 
 .. figure:: ../images/datasource/06.png
 
 
+Test del datasource con un codigo JSP
++++++++++++++++++++++++++++++++++++++
+
 Creamos un directorio de trabajo.::
 
 	# mkdir dbtest
@@ -178,54 +181,13 @@ Copiamos las librerias y los drivers (Los tenemos que descargar).::
 
 	# cp -p ../../../../jstl.jar WEB-INF/lib/
 	# cp -p ../../../../standard.jar WEB-INF/lib/
-	# cp -p ../../../../ojdbc6.jar WEB-INF/lib/
-	# cp -p ../../../../db2jcc.jar WEB-INF/lib/
+
 
 Copiamos la clase que ya en otro momento compilamos.::
 
 	# cp -p ../../../../Hello.class WEB-INF/classes/mypackage/
 
-Creamos los directorios para almacenar los driver en este caso para mysql::
-
-	# mkdir /opt/jboss-eap-6.4/modules/com/mysql/main
-
-Copiamos el driver de MySQL.::
-
 	# cp mysql-connector-java-5.1.47.jar /opt/jboss-eap-6.4/modules/com/mysql/main/
-
-Creamos el archivo module.xml.::
-
-	<?xml version="1.0" encoding="UTF-8"?>
-	<module xmlns="urn:jboss:module:1.0" name="com.mysql">
-	  <resources>
-	    <resource-root path="mysql-connector-java-5.1.47.jar"/>
-	  </resources>
-	  <dependencies>
-	    <module name="javax.api"/>
-	    <module name="javax.transaction.api"/>
-	  </dependencies>
-	</module>
-
-
-Editamos el standalone.xml del Jboss para agregar estas lineas dentro del subsystem xmlns="urn:jboss:domain:datasources:1.2.::
-
-	# vi /opt/jboss-eap-6.4/standalone/configuration/standalone.xml
-
-            <datasources>
-                <datasource jndi-name="java:/TestDB" pool-name="TestDB" enabled="true" use-java-context="true">
-                    <connection-url>jdbc:mysql://localhost:3306/javatest</connection-url>
-                    <driver>com.mysql</driver>
-                    <security>
-                        <user-name>javauser</user-name>
-                        <password>javadude</password>
-                    </security>
-                </datasource>
-                <drivers>
-                    <driver name="com.mysql" module="com.mysql">
-                        <xa-datasource-class>com.mysql.jdbc.Driver</xa-datasource-class>
-                    </driver>
-                </drivers>
-            </datasources>
 
 
 Creamos el web.xml.::
@@ -253,31 +215,10 @@ Creamos el web.xml.::
 		<servlet-name>HelloServlet</servlet-name>
 		<url-pattern>/hello</url-pattern>
 	    </servlet-mapping>
-
-	  <resource-ref>
-	      <description>DB Connection</description>
-	      <res-ref-name>jdbc/TestDB</res-ref-name>
-	      <res-type>javax.sql.DataSource</res-type>
-	      <res-auth>Container</res-auth>
-	  </resource-ref>
-
-	  <!--resource-ref>
-	      <description>Oracle Datasource example</description>
-	      <res-ref-name>jdbc/myoracle</res-ref-name>
-	      <res-type>javax.sql.DataSource</res-type>
-	      <res-auth>Container</res-auth>
-	  </resource-ref-->
-
-	  <!--resource-ref>
-	      <description>DB2 Datasource example</description>
-	      <res-ref-name>jdbc/db2</res-ref-name>
-	      <res-type>javax.sql.DataSource</res-type>
-	      <res-auth>Container</res-auth>
-	  </resource-ref-->
-
+	
 	</web-app>
 
-Creamos el WEB-INF/jboss-web.xml.::
+Creamos el WEB-INF/jboss-web.xml. Este contenido tambien lo pudieramos colocar en el WEB-INF/web.xml y nos evitamos crear este archivo::
 
 	# vi WEB-INF/jboss-web.xml
 
@@ -286,6 +227,10 @@ Creamos el WEB-INF/jboss-web.xml.::
 	    <resource-ref>
 		<res-ref-name>jdbc/TestDB</res-ref-name>
 		<jndi-name>java:/TestDB</jndi-name>
+	    </resource-ref>
+	    <resource-ref>
+		<res-ref-name>jdbc/OracleDS</res-ref-name>
+		<jndi-name>java:/OracleDS</jndi-name>
 	    </resource-ref>
 	</jboss-web>
 
@@ -326,7 +271,7 @@ Creamos el index.html.::
 	</body>
 	</html>
 
-Creamos una JSP solo de demo.::
+Creamos una JSP solo de demo, llamado hello.jsp, esto se puede omitir.::
 
 	<html>
 	<head>
@@ -354,7 +299,7 @@ Creamos una JSP solo de demo.::
 
 
 Creamos nuestras paginas de test en JSP para cada datasource.
-Para MySQL.::
+Para MySQL y la llamamos dbtestmysql.jsp .::
 
 	<%@page import="java.sql.*, javax.sql.*, javax.naming.*"%>
 	<html>
@@ -435,7 +380,7 @@ Para MySQL.::
 	</html>
 
 
-Para Oracle.::
+Para Oracle y le llamamos dbtestoracle.jsp::
 
 
 	<%@page import="java.sql.*, javax.sql.*, javax.naming.*"%>
@@ -454,7 +399,7 @@ Para Oracle.::
 	    try{
 	      Context context = new InitialContext();
 	      Context envCtx = (Context) context.lookup("java:comp/env");
-	      ds =  (DataSource)envCtx.lookup("jdbc/myoracle");
+	      ds =  (DataSource)envCtx.lookup("jdbc/OracleDS");
 	      if (ds != null) {
 		conn = ds.getConnection();
 		stmt = conn.createStatement();
@@ -516,7 +461,7 @@ Para Oracle.::
 	</body>
 	</html>
 
-Para DB2.::
+Para DB2, y le llamamos dbtestdb2.jsp.::
 
 	<%@page import="java.sql.*, javax.sql.*, javax.naming.*"%>
 	<html>
@@ -601,35 +546,27 @@ Creamos el war.::
 
 	# zip -r dbtest.war *
 
-Desplegamos el war en $CATALINA_HOME/webapp.::
+Desplegamos el war en $JBOSS_HOME/standalone/deployments.::
 
-	# cp -p dbtest.war /opt/jboss-eap-6.4/webapps/
+	# cp -p dbtest.war /opt/jboss-eap-6.4/standalone/deployments
 
-Montamos el LOG para ir viendo lo que pasa.::
-
-	# tail -f /opt/jboss-eap-6.4/logs/catalina.out &
-
-Vemos la salida del LOG.::
-
-	21-Sep-2018 10:20:17.341 INFORMACIÓN [localhost-startStop-13] org.apache.catalina.startup.HostConfig.deployWAR Despliegue del archivo [/opt/jboss-eap-6.4/webapps/dbtest.war] de la aplicación web
-	21-Sep-2018 10:20:17.518 INFORMACIÓN [localhost-startStop-13] org.apache.jasper.servlet.TldScanner.scanJars Al menos un JAR, que se ha explorado buscando TLDs, aún no contenía TLDs. Activar historial de depuración para este historiador para una completa lista de los JARs que fueron explorados y de los que nos se halló TLDs. Saltarse JARs no necesarios durante la exploración puede dar lugar a una mejora de tiempo significativa en el arranque y compilación de JSP .
-	21-Sep-2018 10:20:17.526 INFORMACIÓN [localhost-startStop-13] org.apache.catalina.startup.HostConfig.deployWAR Deployment of web application archive [/opt/jboss-eap-6.4/webapps/dbtest.war] has finished in [185] ms
+Montamos el LOG para ir viendo lo que pasa
 
 
 Probamos ahora en el navegador, http:IPSERVER:8080/dbtest
 
-.. figure:: ../images/datasource/01.png
+.. figure:: ../images/test/01.png
 
 
 
 Seleccionamos el link del MySQL.:
 
-.. figure:: ../images/datasource/02.png
+.. figure:: ../images/test/02.png
 
 
 
 
 Seleccionamos el link del Oracle.:
 
-.. figure:: ../images/datasource/03.png
+.. figure:: ../images/test/03.png
 
