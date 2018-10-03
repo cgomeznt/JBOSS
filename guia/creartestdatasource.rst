@@ -177,12 +177,6 @@ Copiamos alguna imagen.::
 
 	# cp ../../../../tomcat.gif images/
 
-Copiamos las librerias y los drivers (Los tenemos que descargar).::
-
-	# cp -p ../../../../jstl.jar WEB-INF/lib/
-	# cp -p ../../../../standard.jar WEB-INF/lib/
-
-
 Copiamos la clase que ya en otro momento compilamos.::
 
 	# cp -p ../../../../Hello.class WEB-INF/classes/mypackage/
