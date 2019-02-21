@@ -7,9 +7,14 @@ Debe tener instalado la versión que se requiera de **jboss-eap** para este ejem
 Para Micosoft SQL Server
 +++++++++++++++
 
+Desde este link descargamos el driver:
+
+http://jtds.sourceforge.net/
+
+
 Creamos los directorios en donde estará el driver de Oracle y el archivo module.xml que cargara dicho driver.::
 
-	# mkdir -p net/sourceforge/jtds/main
+	# mkdir -p /opt/jboss/jboss-eap-7.1.0/modules/net/sourceforge/jtds/main
 
 Copiamos el driver de Oracle en la ruta creada.::
 
@@ -37,6 +42,7 @@ Modificamos el archivo standalone.xml para agregar la configuración del Datasou
 
 	    [...]
 
+	<datasources>
 	<datasource jndi-name="java:jboss/datasources/myDB" pool-name="myDB" enabled="true" use-java-context="true">
 		<connection-url>jdbc:jtds:sqlserver://192.168.0.94:1433/SRVMSSQL;loginTimeout=30</connection-url>
 		<driver>JTDS</driver>
