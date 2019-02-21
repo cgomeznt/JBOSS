@@ -84,15 +84,15 @@ Modificamos el archivo standalone.xml para agregar la configuración del Datasou
 Detenemos el Jboss y lo iniciamos nuevamente, no se deben visualizar errores en el LOG, hacemos un test de Conexión en la URL administrativa.
 
 
-.. figure:: ../images/datasource/01.png
+.. figure:: ../images/datasource/07.png
 
 
-.. figure:: ../images/datasource/02.png
+.. figure:: ../images/datasource/13.png
 
 
-.. figure:: ../images/datasource/05.png
+.. figure:: ../images/datasource/11.png
 
 
-.. figure:: ../images/datasource/06.png
+.. figure:: ../images/datasource/12.png
 
 
