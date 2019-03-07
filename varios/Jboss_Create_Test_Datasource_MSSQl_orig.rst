@@ -58,4 +58,53 @@ Pasos
 * Verificar la conexión del Datasource usando la opción Test Connection. ubicada en la caja de opciones del Datasource recien creado.
 
 .. figure:: ../images/datasource/23.png
+
+
+* Este seria el contenido del standalone.xml::
+
+            <datasources>
+                <datasource jndi-name="java:jboss/datasources/ExampleDS" pool-name="ExampleDS" enabled="true" use-java-context="true">
+                    <connection-url>jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE</connection-url>
+                    <driver>h2</driver>
+                    <security>
+                        <user-name>sa</user-name>
+                        <password>sa</password>
+                    </security>
+                </datasource>
+                <datasource jta="true" jndi-name="java:/jdbc/Datasource-GS" pool-name="jdbc/Datasource-GS" enabled="true" use-ccm="false">
+                    <connection-url>jdbc:sqlserver://192.168.0.94:1433;DatabaseName=SRVMSSQL</connection-url>
+                    <driver-class>com.microsoft.sqlserver.jdbc.SQLServerDriver</driver-class>
+                    <driver>MsSqlServer</driver>
+                    <security>
+                        <user-name>BXPLUSGU_V138</user-name>
+                        <password>BXPLUSGU_V138</password>
+                    </security>
+                    <validation>
+                        <valid-connection-checker class-name="org.jboss.jca.adapters.jdbc.extensions.mssql.MSSQLValidConnectionChecker"/>
+                        <background-validation>true</background-validation>
+                    </validation>
+                </datasource>
+                <datasource jta="true" jndi-name="java:/jdbc/Datasource-MX" pool-name="jdbc/Datasource-MX" enabled="true" use-ccm="false">
+                    <connection-url>jdbc:sqlserver://192.168.0.94:1433;DatabaseName=SRVMSSQL</connection-url>
+                    <driver-class>com.microsoft.sqlserver.jdbc.SQLServerDriver</driver-class>
+                    <driver>MsSqlServer</driver>
+                    <security>
+                        <user-name>BXPLUS_V138</user-name>
+                        <password>BXPLUS_V138</password>
+                    </security>
+                    <validation>
+                        <valid-connection-checker class-name="org.jboss.jca.adapters.jdbc.extensions.mssql.MSSQLValidConnectionChecker"/>
+                        <background-validation>true</background-validation>
+                    </validation>
+                </datasource>
+                <drivers>
+                    <driver name="h2" module="com.h2database.h2">
+                        <xa-datasource-class>org.h2.jdbcx.JdbcDataSource</xa-datasource-class>
+                    </driver>
+                    <driver name="MsSqlServer" module="com.microsoft.sqlserver.jdbc">
+                        <xa-datasource-class>com.microsoft.sqlserver.jdbc.SQLServerDriver</xa-datasource-class>
+                    </driver>
+                </drivers>
+            </datasources>
+
 .. figure:: ../images/datasource/24.png
