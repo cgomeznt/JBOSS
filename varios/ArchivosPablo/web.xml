@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
+<web-app id="WebApp_1160329864938">
+    <filter id="Filter_9999">
+        <filter-name>ESAPIFilter</filter-name>
+        <filter-class>org.owasp.esapi.filters.SecurityWrapper</filter-class>
+    </filter>
+
+
+    <!-- Definiciones para Wicket -->
+    <filter>
+        <filter-name>WicketApplication</filter-name>
+        <filter-class>org.apache.wicket.protocol.http.WicketFilter</filter-class>
+        <init-param>
+            <param-name>applicationClassName</param-name>
+            <param-value>portal.wicket.modules.main.Application</param-value>
+        </init-param>
+        <init-param>
+            <param-name>configuration</param-name>
+            <param-value>deployment</param-value>
+        </init-param>
+    </filter>
+    <!-- (JCS) used to close conections in web services-->
+    <filter>
+        <filter-name>ServiceInfoSetFilter</filter-name>
+        <filter-class>com.consisint.acsele.portal.services.filters.ServiceInfoSetFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>WicketApplication</filter-name>
+        <url-pattern>/portalWicket/home/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>ESAPIFilter</filter-name>
+        <url-pattern>/portalWicket/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>ServiceInfoSetFilter</filter-name>
+        <servlet-name>action</servlet-name>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>ServiceInfoSetFilter</filter-name>
+        <url-pattern>/rest/*</url-pattern>
+    </filter-mapping>
+
+    <listener id="listener_x3">
+        <listener-class>portal.wicket.config.PortalWicketListener</listener-class>
+    </listener>
+    <!-- Definiciones para Axis -->
+    <listener id="Listener_1160329864938">
+        <listener-class>org.apache.axis.transport.http.AxisHTTPSessionListener</listener-class>
+    </listener>
+    <listener>
+        <listener-class>com.consisint.acsele.webservice.base.listener.InitialListener</listener-class>
+    </listener>
+
+    <!-- JAX WS Metro Listener -->
+    <listener>
+        <listener-class>
+            com.sun.xml.ws.transport.http.servlet.WSServletContextListener
+        </listener-class>
+    </listener>
+
+    <servlet id="Servlet_1160329857281">
+        <servlet-name>AxisServlet</servlet-name>
+        <display-name>Apache-Axis Servlet</display-name>
+        <servlet-class>org.apache.axis.transport.http.AxisServlet</servlet-class>
+    </servlet>
+    <servlet id="Servlet_1160329857282">
+        <servlet-name>AdminServlet</servlet-name>
+        <display-name>Axis Admin Servlet</display-name>
+        <servlet-class>org.apache.axis.transport.http.AdminServlet</servlet-class>
+        <load-on-startup>100</load-on-startup>
+    </servlet>
+    <servlet id="Servlet_1160329857283">
+        <servlet-name>SOAPMonitorService</servlet-name>
+        <display-name>SOAPMonitorService</display-name>
+        <servlet-class>org.apache.axis.monitor.SOAPMonitorService</servlet-class>
+        <init-param id="InitParam_1160329864938">
+            <param-name>SOAPMonitorPort</param-name>
+            <param-value>5001</param-value>
+        </init-param>
+        <load-on-startup>100</load-on-startup>
+    </servlet>
+    <!-- Definiciones para Struts -->
+    <servlet id="Servlet_1160329857284">
+        <servlet-name>action</servlet-name>
+        <servlet-class>org.apache.struts.action.ActionServlet</servlet-class>
+        <init-param>
+            <param-name>config</param-name>
+            <param-value>/WEB-INF/struts/struts-config_portal.xml</param-value>
+        </init-param>
+        <init-param>
+            <param-name>debug</param-name>
+            <param-value>1</param-value>
+        </init-param>
+        <init-param>
+            <param-name>detail</param-name>
+            <param-value>1</param-value>
+        </init-param>
+        <init-param>
+            <param-name>validate</param-name>
+            <param-value>true</param-value>
+        </init-param>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
+    <servlet>
+        <servlet-name>WicketApplicationServlet</servlet-name>
+        <servlet-class>org.apache.wicket.protocol.http.WicketServlet</servlet-class>
+        <init-param>
+            <param-name>applicationClassName</param-name>
+            <param-value>portal.wicket.modules.main.Application</param-value>
+        </init-param>
+        <load-on-startup>3</load-on-startup>
+    </servlet>
+    <servlet>
+        <servlet-name>TestServlet</servlet-name>
+        <servlet-class>com.consisint.acsele.ws.test.TestServlet</servlet-class>
+        <load-on-startup>4</load-on-startup>
+    </servlet>
+
+    <!-- JAX WS Metro Servlet -->
+
+    <servlet>
+        <servlet-name>soapWebService</servlet-name>
+        <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet>
+        <servlet-name>rsWebService</servlet-name>
+        <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
+        <init-param>
+            <param-name>jersey.config.server.provider.packages</param-name>
+            <param-value>com.consisint.acsele.webservice.jersey</param-value>
+        </init-param>
+        <init-param>
+            <param-name>jersey.config.server.provider.scanning.recursive</param-name>
+            <param-value>true</param-value>
+        </init-param>
+        <init-param>
+            <param-name>jersey.config.server.provider.classnames</param-name>
+            <param-value>
+                org.glassfish.jersey.media.multipart.MultiPartFeature,
+                org.glassfish.jersey.filter.LoggingFilter
+            </param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>rsWebService</servlet-name>
+        <url-pattern>/rest/*</url-pattern>
+    </servlet-mapping>
+
+
+    <!-- JAX WS Metro Mapping -->
+    <servlet-mapping>
+        <servlet-name>soapWebService</servlet-name>
+        <url-pattern>/soap/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>TestServlet</servlet-name>
+        <url-pattern>/generaliVHxml</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TestServlet</servlet-name>
+        <url-pattern>/libertyVHxml</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TestServlet</servlet-name>
+        <url-pattern>/axaVHxml</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TestServlet</servlet-name>
+        <url-pattern>/bbvaVHxml</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>TestServlet</servlet-name>
+        <url-pattern>/generaliAPxml</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TestServlet</servlet-name>
+        <url-pattern>/libertyAPxml</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TestServlet</servlet-name>
+        <url-pattern>/axaAPxml</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TestServlet</servlet-name>
+        <url-pattern>/bbvaAPxml</url-pattern>
+    </servlet-mapping>
+
+
+    <servlet-mapping>
+        <servlet-name>TestServlet</servlet-name>
+        <url-pattern>/testjson</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>WicketApplicationServlet</servlet-name>
+        <url-pattern>/portalWicket/home</url-pattern>
+    </servlet-mapping>
+
+    <!-- Mappings para Axis -->
+    <servlet-mapping id="ServletMapping_1160329864938">
+        <servlet-name>AxisServlet</servlet-name>
+        <url-pattern>/servlet/AxisServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping id="ServletMapping_1160329864939">
+        <servlet-name>AxisServlet</servlet-name>
+        <url-pattern>*.jws</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping id="ServletMapping_1160329864940">
+        <servlet-name>AxisServlet</servlet-name>
+        <url-pattern>/services/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping id="ServletMapping_1160329864941">
+        <servlet-name>SOAPMonitorService</servlet-name>
+        <url-pattern>/SOAPMonitor</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping id="ServletMapping_1160329864942">
+        <servlet-name>AdminServlet</servlet-name>
+        <url-pattern>/servlet/AdminServlet</url-pattern>
+    </servlet-mapping>
+    <!-- Mappings para Struts -->
+    <servlet-mapping id="ServletMapping_1160329864943">
+        <servlet-name>action</servlet-name>
+        <url-pattern>*.do</url-pattern>
+    </servlet-mapping>
+    <session-config id="SessionConfig_1160329864953">
+        <session-timeout>5</session-timeout>
+    </session-config>
+    <mime-mapping id="MimeMapping_1160329864953">
+        <extension>wsdl</extension>
+        <mime-type>text/xml</mime-type>
+    </mime-mapping>
+    <mime-mapping id="MimeMapping_1160329864954">
+        <extension>xsd</extension>
+        <mime-type>text/xml</mime-type>
+    </mime-mapping>
+    <welcome-file-list id="WelcomeFileList">
+        <welcome-file>index.jsp</welcome-file>
+        <welcome-file>index.html</welcome-file>
+        <welcome-file>index.jws</welcome-file>
+    </welcome-file-list>
+
+    <taglib id="TagLibRef_1087847903228">
+        <taglib-uri>/logic</taglib-uri>
+        <taglib-location>/WEB-INF/struts/struts-logic.tld</taglib-location>
+    </taglib>
+</web-app>

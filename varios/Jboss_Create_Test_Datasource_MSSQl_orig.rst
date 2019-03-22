@@ -59,6 +59,8 @@ Pasos
 
 .. figure:: ../images/datasource/23.png
 
+.. figure:: ../images/datasource/24.png
+
 
 * Este seria el contenido del standalone.xml::
 
@@ -107,4 +109,4 @@ Pasos
                 </drivers>
             </datasources>
 
-.. figure:: ../images/datasource/24.png
+
