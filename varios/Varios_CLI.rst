@@ -39,7 +39,7 @@ Deploy
 
 o::
 
-	/opt/jboss/jboss-eap-7.1.0/bin/jboss-cli.sh --connect controller=192.168.0.4 --command="deploy /u06/app/oracle/domain/EAR_Weblogic/8080/CONSIS.ear"
+	/opt/jboss/jboss-eap-7.1.0/bin/jboss-cli.sh --connect controller=192.168.0.4:9990 --command="deploy /u06/app/oracle/domain/EAR_Weblogic/8080/CONSIS.ear"
 
 
 Undeploy
@@ -50,7 +50,7 @@ Undeploy
 
 o::
 
-	/opt/jboss/jboss-eap-7.1.0/bin/jboss-cli.sh --connect controller=192.168.0.4 --command="undeploy CONSIS.ear"
+	/opt/jboss/jboss-eap-7.1.0/bin/jboss-cli.sh --connect controller=192.168.0.4:9990 --command="undeploy CONSIS.ear"
 
 
 Start
@@ -64,7 +64,7 @@ Stop
 
 o::
 
-	/opt/jboss/jboss-eap-7.1.0/bin/jboss-cli.sh --connect controller=192.168.0.4 --command="shutdown"
+	/opt/jboss/jboss-eap-7.1.0/bin/jboss-cli.sh --connect controller=192.168.0.4:9990 --command="shutdown"
 
 
 
