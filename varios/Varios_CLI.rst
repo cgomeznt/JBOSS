@@ -2,9 +2,9 @@ Conectar al Jboss CLI
 ++++++++++++++++++++++++++++
 ::
 
-	jboss-cli.sh --connect controller=IP_ADDRESS
+	jboss-cli.sh --connect controller=IP_ADDRESS:PORT
 
-	$ /opt/jboss/jboss-eap-7.1.0/bin/jboss-cli.sh --connect controller=192.168.0.4
+	$ /opt/jboss/jboss-eap-7.1.0/bin/jboss-cli.sh --connect controller=192.168.0.4:9990
 
 Informacion de los deployments
 ++++++++++++++++++++++++++++++++
