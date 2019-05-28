@@ -138,6 +138,8 @@ Para la instalación planteada debemos alterar el archivo domain.xml dentro del 
 
 Como se puede ver en la configuración anterior, se está haciendo referencia a un profile llamado default. El mismo esta definido al comienzo del archivo, y se deberá definir en el los datasources y eñ resto de las configuraciones necesarias para el grupo.
 
-**NOTA** si vamos a trabajar con los subsistemas de los Perfiles, como por ejemplo los datasource deberemos asociar un server a distintos profiles y en estos profiles le crearemos los datasource que se asociaran a estos perfiles. 
+**NOTA** si vamos a trabajar con los subsistemas de los Perfiles, como por ejemplo los datasource deberemos asociar un server a distintos profiles y en estos profiles le crearemos los datasource que se asociaran a estos perfiles.
+
+Por ejemplo en el *domain.xml* copiamos una estructura de algun perfil y le cambiamos el nombre y dentro de este nuevo perfil agregamos los datasource, luego en el tab de *server-group* asociamos el server grupo que queramos al nuevo perfil. 
 
 
