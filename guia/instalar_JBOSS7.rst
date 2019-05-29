@@ -1,6 +1,7 @@
 Instalar JBOSS EAP en modo Dominio
 ===================================
 
+Esto fue certificado con Jboss-EAP 6.4.0
 
 JBoss EAP (Enterprise Application Platform)Red Hat® JBoss® Enterprise Application Platform (JBoss EAP) proporciona seguridad, rendimiento y escalabilidad a nivel empresarial en cualquier entorno. Ya sea de forma local o virtual, o en nubes públicas, privadas o híbridas, JBoss EAP le puede ayudar a distribuir sus aplicaciones con mayor rapidez, en cualquier lugar.
 
