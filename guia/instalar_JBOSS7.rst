@@ -72,7 +72,7 @@ Configurar archivo host.xml (JBOSS_HOME/domain/configuration/host.xml)
 
 	<security-realm name="SlaveRealm">
 	<server-identities>
-		<secret value="VG8kJCRUYTQ=" />
+		<secret value="VmVuZXp1ZWxhLjIx" /> Venezuela.21
 	    </server-identities>
 	</security-realm>
 
@@ -142,4 +142,8 @@ Como se puede ver en la configuración anterior, se está haciendo referencia a 
 
 Por ejemplo en el *domain.xml* copiamos una estructura de algun perfil y le cambiamos el nombre y dentro de este nuevo perfil agregamos los datasource, luego en el tab de *server-group* asociamos el server grupo que queramos al nuevo perfil. 
 
+
+Para conectarte desde el slave
+
+jboss-cli.sh --controller=192.168.1.54:9990
 
