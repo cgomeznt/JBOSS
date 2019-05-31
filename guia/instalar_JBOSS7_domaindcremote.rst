@@ -1,9 +1,8 @@
-Instalar y Configurar un dominio simple de EAP 7.1.0
+Instalar y Configurar un dominio simple de EAP 7.0.0
 ==================================================
 
-Esto fue certificado con Jboss-EAP 7.1.0
+Esto fue certificado con Jboss-EAP 7.0.0
 
-NOTA: con Jboss-EAP 7.1.0 no se pudo realizar la configuración de remote Domain Controller, pero son el Jboss-EAP 7.0.0 si fue exitosa.
 
 Vamos a configurar un dominio JBoss EAP 7.0 con los siguientes requisitos:
 
@@ -15,42 +14,24 @@ Vamos a configurar un dominio JBoss EAP 7.0 con los siguientes requisitos:
 	* Server11 y Server21 son miembros del grupo de servidores primario (nombre = primary-server-group)
 	* Server12 y Server22 pertenecen al grupo de servidores secundarios (nombre = secundary-server-group)
 	* Server23 es el único miembro del grupo de servidores singleton (nombre = singleton-server-group)
-	* En la vida real las maquinas Host0, Host1, Host2 se encuentra en su mayoría en una ubicación física diferente o en maquinas virtuales diferentes, pero para el propósito de este tutorial los simularemos en el mismo localhost utilizando una instalación EAP 7.1.0 y diferentes carpetas de configuración para cada Máquina.
 	* Para mantenerlo simple, no cubriremos la configuración de JVM en detalle en esta parte.
 
-.. figure:: ../images/domain/02.png
+.. figure:: ../images/domain/00.png
 
 
 
 Configuración del Workspace
-Para completar el paso de la instalación, primero vamos a preparar el Workspace, crear la estructura de directorios, descargar e instalar EAP 7.1, luego configurar los hosts master y slaves.
+Para completar el paso de la instalación, primero vamos a preparar el Workspace, crear la estructura de directorios, descargar e instalar EAP 7.0.0, luego configurar los hosts master y slaves.
 
-Usaré /opt/jboss/lab/ como carpeta raíz 
-
-En esta carpeta raíz, se crear una subcarpeta de laboratorios y 3 subcarpetas en ella, para los diferentes archivos de configuración de hosts::
-
-	$ mkdir -p /opt/jboss/lab/{host0,host1,host2}
-
+Usaré /opt/jboss/EAP-7.0.0 como carpeta raíz en todos los servers.
 
 Instalar Jboss EAP
 ++++++++++++++++++++++
 
 
-Visite Red Hat Developers para descargar el archivo zip EAP 7.1.0 y extraerlo en la carpeta /opt/jboss/lab/::
+Visite Red Hat Developers para descargar el archivo zip EAP 7.0.0 y extraerlo en la carpeta /opt/jboss/EAP-7.0.0::
 
-	$ jboss-eap-7.1.0.zip -d /opt/jboss/lab/
-
-Ahora tendrá las siguientes subcarpetas en los laboratorios::
-
-	host0 
-	host1 
-	host2 
-	jboss-eap-7.1.0
-
-
-En la vida real, tendría un binario de instalación separado para cada host, pero para este tutorial usaremos los mismos binarios de instalación compartidos por los 3 hosts.
-
-Los archivos de configuración que se utilizarán para cada host se especificarán en el comando de inicio. Esta es una práctica recomendada que le permite ejecutar varias instancias de EAP en modo Dominio en la misma máquina usando los mismos archivos de instalación. También le permite actualizar a una versión más nueva de EAP sin afectar o sobrescribir sus archivos de configuración.
+	$ EAP-7.0.0.0.zip -d /opt/jboss/EAP-7.0.0
 
 Crear Management User
 ++++++++++++++++++++++
@@ -81,10 +62,10 @@ Cree un usuario de administración adminusando la secuencia de comandos add-user
 	Contraseña : 
 	Reintroduzca la contraseña : 
 	¿ A qué grupos quiere que este usuario pertenezca? (introduzca una lista o deje en blanco para ninguno)[  ]: 
-	Usuario actualizado 'admin' al archivo '/opt/jboss/lab/jboss-eap-7.1/standalone/configuration/mgmt-users.properties'
-	Usuario actualizado 'admin' al archivo '/opt/jboss/lab/jboss-eap-7.1/domain/configuration/mgmt-users.properties'
-	Se actualizó el usuario 'admin' con los grupos ' al archivo '/opt/jboss/lab/jboss-eap-7.1/standalone/configuration/mgmt-groups.properties'
-	Se actualizó el usuario 'admin' con los grupos ' al archivo '/opt/jboss/lab/jboss-eap-7.1/domain/configuration/mgmt-groups.properties'
+	Usuario actualizado 'admin' al archivo '/opt/jboss/lab/EAP-7.0.0/standalone/configuration/mgmt-users.properties'
+	Usuario actualizado 'admin' al archivo '/opt/jboss/lab/EAP-7.0.0/domain/configuration/mgmt-users.properties'
+	Se actualizó el usuario 'admin' con los grupos ' al archivo '/opt/jboss/lab/EAP-7.0.0/standalone/configuration/mgmt-groups.properties'
+	Se actualizó el usuario 'admin' con los grupos ' al archivo '/opt/jboss/lab/EAP-7.0.0/domain/configuration/mgmt-groups.properties'
 	¿Este nuevo usuario se va a utilizar para que un proceso AS se conecte a otro proceso AS?  
 	 por ejemplo: para que un controlador host de esclavos se conecte al maestro o para una conexión remota para llamadas EJB de servidor a servidor.
 	¿si/no? y
@@ -97,28 +78,6 @@ Puedes obtener el base64 de esta forma::
 	$ echo -n 'Venezuela.21' | openssl enc -base64
 	VmVuZXp1ZWxhLjIx
 
-
-Creando configuration files
-+++++++++++++++++++++++++++++
-
-Ahora vamos a replicar la configuración actual en los 3 hosts individuales antes de continuar. Inicialice los archivos de configuración para cada host copiando la carpeta jboss-eap-7.1.0 /domain en cada uno de los tres hosts.::
-
-	cp -r /opt/jboss/lab/jboss-eap-7.1/domain/ host0/domain
-
-	cp -r /opt/jboss/lab/jboss-eap-7.1/domain/ host1/domain
-
-	cp -r /opt/jboss/lab/jboss-eap-7.1/domain/ host2/domain
-
-
-
-Esto debería incluir tres subcarpetas en hostX /domain::
-
-	configuration/
-	data/
-	tmp/
-
-
-Ahora tenemos la configuración básica en la que podemos confiar para configurar un Domain Controller Master en host0 y slaves. Host Controllers en host1 y host2.
 
 Configurar the Domain Controller/Master en Host0
 +++++++++++++++++++++++++++++++++++++++++++++++++
@@ -146,7 +105,7 @@ Ahora compruebe los parámetros de la interfaz de gestión::
 
     <interfaces>
         <interface name="management">
-            <inet-address value="${jboss.bind.address.management:127.0.0.1}"/>
+            <inet-address value="${jboss.bind.address.management:192.168.1.66}"/>
         </interface>
     </interfaces>
 
@@ -204,10 +163,9 @@ Iniciar el domain controller
 
 Por defecto, el script domain.sh comienza con el archivo host.xml, por lo que tenemos que usar la opción –host-config para señalar host-master.xml, En segundo lugar, tenemos que especificar el directorio base de jefe para host0: host0/domain::
 
-	/opt/jboss/lab/jboss-eap-7.1/bin/domain.sh --host-config=host-master.xml -Djboss.domain.base.dir=/opt/jboss/lab/host0/domain/
+	/opt/jboss/lab/EAP-7.0.0/bin/domain.sh --host-config=host-master.xml
 
-
-Ahora podemos conectarnos al dominio usando http://localhost:9990 usando el usuario admin y navegar por la configuración del dominio. Puede ver el host0-master y los diferentes grupos de servidores que agregamos en domain.xml. Todas estas configuraciones se pueden hacer también en la consola de administración:
+Ahora podemos conectarnos al dominio usando http://192.168.1.66:9990 usando el usuario admin y navegar por la configuración del dominio. Puede ver el host0-master y los diferentes grupos de servidores que agregamos en domain.xml. Todas estas configuraciones se pueden hacer también en la consola de administración:
 
 
 .. figure:: ../images/domain/03.png
@@ -255,12 +213,8 @@ Edite el archivo host-slave.xml ubicado en host1/domain/configuration Reemplace 
 Para hacer referencia al controlador de dominio remoto, tenemos que usar la siguiente configuración para hacer referencia al maestro definido en host0::
 
     <domain-controller>
-       <remote host="${jboss.domain.master.address:127.0.0.1}" port="${jboss.domain.master.port:9999}" security-realm="ManagementRealm"/>
-    </domain-controller>
-
-NOTA: la configuración anterior se probo con un Jboss-eap 7.0.0 y funciono con esto::
-
         <remote protocol="remote" host="192.168.1.66" port="9999" security-realm="ManagementRealm" username="admin"/>
+    </domain-controller>
 
 y se agrego en el security-realms lo siguiente, recuerda si solo si, el Domain Controller esta remoto, es decir en otro equipo::
 
@@ -273,33 +227,23 @@ y se agrego en el security-realms lo siguiente, recuerda si solo si, el Domain C
                 <...>
             </security-realm>
 
-Debido a que la interfaz de administración nativa en el controlador de dominio host0 ya está utilizando el puerto predeterminado 9999 para evitar conflictos de puertos, vamos a utilizar los puertos 19999 para la interfaz de administración nativa host1. Utilice 29999 para host2. Tenga en cuenta que no tenemos una interfaz de administración HTTP para los controladores host esclavos. La interfaz de administración HTTP del dominio en host0: 9990 es suficiente.::
-
-        <management-interfaces>
-            <native-interface security-realm="ManagementRealm">
-                <socket interface="management" port="${jboss.management.native.port:19999}"/>
-            </native-interface>
-        </management-interfaces>
-    </management>
-
 
 Ahora vamos a configurar los servidores - Server11 y Server12 de host1 en la sección de servers::
 
     <servers>
         <server name="server-one" group="primary-server-group">
-            <socket-bindings port-offset="100"/>
         </server>
         <server name="server-two" group="secondary-server-group">
-            <socket-bindings port-offset="200"/>
+            <socket-bindings port-offset="2"/>
         </server>
     </servers>
 
 
-El atributo de grupo se refiere al nombre del grupo de servidores definido en domain.xml en host0, para evitar conflictos de puertos, estamos asignando un desplazamiento de puerto de 100 a Server11 y 200 a Server12. Con esta configuración, por ejemplo, dado que el puerto 8080 de enlace completo de socket /socket utiliza para el tráfico HTTP, server11 escuchará en el puerto http 8180 y server12 en el puerto 8280
+Dado que el puerto 8080 de enlace completo de socket /socket utiliza para el tráfico HTTP, server11 escuchará en el puerto http 8080 y server12 en el puerto 8082
 
 Ahora podemos iniciar el controlador host1 con el siguiente comando::
 
-	/opt/jboss/lab/jboss-eap-7.1/bin/domain.sh --host-config=host-slave.xml -Djboss.domain.base.dir=/opt/jboss/lab/host1/domain/
+	/opt/jboss/lab/EAP-7.0.0/bin/domain.sh --host-config=host-slave.xml
 
 
 Puedes ver los registros de inicio de server11 y server12::
@@ -330,19 +274,18 @@ Si se desconecta en el LOG del Domain Controller debe ver::
 
 El proceso es similar para Host2, pero puede usar la consola de administración para completar la configuración después de iniciar host2 con el siguiente comando::
 
-	/opt/jboss/lab/jboss-eap-7.1/bin/domain.sh --host-config=host-slave.xml -Djboss.domain.base.dir=/opt/jboss/lab/host2/domain/
+	/opt/jboss/lab/EAP-7.0.0/bin/domain.sh --host-config=host-slave.xml
 
-En el enlace de socket Realice la misma configuración de desplazamiento de puerto en host2 para tener tráfico de HTTP en los siguientes puertos, para que los puertos queden así server21(8380), server22(8480) and server23(8580)::
+En el enlace de socket Realice la misma configuración de desplazamiento de puerto en host2 para tener tráfico de HTTP en los siguientes puertos, para que los puertos queden así server21(8080), server22(8081) and server23(8083)::
 
     <servers>
         <server name="server-three" group="primary-server-group">
-            <socket-bindings port-offset="300"/>
         </server>
         <server name="server-four" group="secondary-server-group">
-            <socket-bindings port-offset="400"/>
+            <socket-bindings port-offset="1"/>
         </server>
         <server name="server-five" group="singleton-server-group" auto-start="true">
-            <socket-bindings port-offset="500"/>
+            <socket-bindings port-offset="2"/>
         </server>
     </servers>
 
@@ -367,6 +310,8 @@ Articulos utilizados:
 https://developers.redhat.com/blog/2016/07/28/jboss-eap-7-domain-deployments-part-1-setup-a-simple-eap-domain/
 
 https://www.middlewarebox.com/2018/02/a-domain-controller-is-central-point.html
+
+https://access.redhat.com/solutions/218053
 
 
 

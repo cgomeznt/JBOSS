@@ -39,6 +39,12 @@ Cree un nuevo usuario en el Realm de nombre ManagementRealm, en el último paso 
 
 Contestar “yes” y copiar el tag , para su utilización a posterior, recordar el nombre de usuario elegido. Para ejemplificar supongamos fue creado el usuario “admin”.
 
+
+Puedes obtener el base64 de esta forma::
+
+	$ echo -n 'Venezuela.21' | openssl enc -base64
+	VmVuZXp1ZWxhLjIx
+
 Configurar archivo host.xml (JBOSS_HOME/domain/configuration/host.xml)
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -73,7 +79,7 @@ Configurar archivo host.xml (JBOSS_HOME/domain/configuration/host.xml)
 
 	<security-realm name="SlaveRealm">
 	<server-identities>
-		<secret value="VmVuZXp1ZWxhLjIx" /> Venezuela.21
+		<secret value="VmVuZXp1ZWxhLjIx" /> <!-- Venezuela.21 -->
 	    </server-identities>
 	</security-realm>
 
