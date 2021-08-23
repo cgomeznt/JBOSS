@@ -21,13 +21,20 @@ Verificamos la version.::
 	Java(TM) SE Runtime Environment (build 1.8.0_101-b13)
 	Java HotSpot(TM) 64-Bit Server VM (build 25.101-b13, mixed mode)
 
-Configuramos las variables de entorno JAVA_HOME , JBOSS_HOME y PATH, El java se instalo en "/usr/java/jdk1.8.0_101".::
+Configuramos las variables de entorno JAVA_HOME y PATH, El java se instalo en "/usr/java/jdk1.8.0_101".::
 
 	# vi /etc/profile
 		# agregamos estas lineas y ya queda para todos los perfiles de usuario
 		export JAVA_HOME=/usr/java/jdk1.8.0_101
 		export JBOSS_HOME=/opt/jboss-eap-6.4
-		export PATH=$PATH:$JAVA_HOME/jre/bin:$JBOSS_HOME
+		export PATH=$PATH:$JAVA_HOME/jre/bin
+
+Verificamos la version, con la ruta absoluta en donde se instalo el java y el cual esta configurado para el JAVA_HOME::
+
+	/usr/java/jdk1.8.0_101/jre/bin/java -version
+	  java version "1.8.0_101"
+	  Java(TM) SE Runtime Environment (build 1.8.0_101-b13)
+	  Java HotSpot(TM) 64-Bit Server VM (build 25.101-b13, mixed mode)
 
 Descargamos el JBOSS EAP y lo instalamos
 +++++++++++++++++++++++++++++++++++++++++
