@@ -36,6 +36,7 @@ Verificamos la version, con la ruta absoluta en donde se instalo el java y el cu
 	  Java(TM) SE Runtime Environment (build 1.8.0_101-b13)
 	  Java HotSpot(TM) 64-Bit Server VM (build 25.101-b13, mixed mode)
 
+
 Descargamos el JBOSS EAP y lo instalamos
 +++++++++++++++++++++++++++++++++++++++++
 
@@ -60,7 +61,7 @@ Podemos editar el .bash_profile para agregar las variables, recordemos que no es
 	# vi /home/jboss/.bash_profile
 		export JAVA_HOME=/usr/java/jdk1.8.0_101
 		export JBOSS_HOME=/opt/jboss-eap-6.4
-		export PATH=$PATH:$JAVA_HOME/jre/bin:$JBOSS_HOME:$HOME/bin
+		export PATH=$PATH:$JAVA_HOME/bin:$JBOSS_HOME:$HOME/bin
 
 Asignamos como propietario al usuario jboss la instalacion de JBoss EAP.::
 
