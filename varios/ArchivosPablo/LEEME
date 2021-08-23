@@ -1,0 +1,95 @@
+
+/u06/app/oracle/domain/external/AcseleConfigurationfile_7022_PREVENTA_13.8.txt
+
+#DB  Boliviana
+         #<JDBCBO Driver>
+            driverDBSV=oracle.jdbc.driver.OracleDriver
+     	    servidorDBSV=jdbc:oracle:thin:@192.168.1.53:1521:qa12c
+            idclassSV=IDDBFactoryOracle
+     #</JDBCBO Driver>
+    #<JDBC Driver>
+        driverDB=oracle.jdbc.driver.OracleDriver
+	    servidorDB=jdbc:oracle:thin:@192.168.1.53:1521:qa12c
+        idclass=IDDBFactoryOracle
+    #</JDBC Driver>
+#<DBMS/>
+
+   #-- SALVADOR--
+	userDBSV=QA_PREV_V138
+        passwDBSV=QA_PREV_V138
+
+   #DB  Usuarios Central
+        userDB=QA_PREVGU_V138
+        passwDB=QA_PREVGU_V138
+	
+   #</User and Password>
+
+
+
+
+Coloca este web.xml en <EAR>/WebServices.war/WEB-INF
+	web.xml
+
+Colocar este jar en <EAR>/WController.war/WEB-INF/lib
+	taglib-log.jar
+
+
+en Security.war crear un directorio META-INF y colocar el archivo
+	MANIFEST.MF
+
+
+en Translation.war crear un directorio META-INF y colocar el archivo
+	MANIFEST.MF
+
+
+El archivo external-log.xml va donde estan los archivos del AcseleConfigurationFile
+
+===========================================================================
+
+/u06/app/oracle/domain/external/AcseleConfigurationfile_7051_BXMAS_V13.8.txt
+
+
+#DB asesuisa
+         #<JDBCVE Driver>
+            driverDBMX=com.microsoft.sqlserver.jdbc.SQLServerDriver
+     	    servidorDBMX=jdbc:sqlserver://192.168.0.94:1433
+            idclassMX=IDDBFactorySql
+     #</JDBCVE Driver>
+#<JDBC Driver>
+       driverDB=com.microsoft.sqlserver.jdbc.SQLServerDriver
+       servidorDB=jdbc:sqlserver://192.168.0.94:1433
+       idclass=IDDBFactorySql
+    #</JDBC Driver>
+#<DBMS/>
+#<User and Password>
+	#-- 
+	userDBMX=BXPLUS_V138
+	passwDBMX=BXPLUS_V138
+
+	#DB  Usuarios Central
+       
+	userDB=BXPLUSGU_V138
+	passwDB=BXPLUSGU_V138	
+   #</User and Password>
+
+
+es necesario apagar unos módulos
+
+ <extension module="org.jboss.as.jaxrs"/>
+
+<extension module="org.jboss.as.webservices"/>
+
+ <subsystem xmlns="urn:jboss:domain:jaxrs:1.0"/>
+
+
+
+        <subsystem xmlns="urn:jboss:domain:webservices:2.0">
+            <wsdl-host>${jboss.bind.address:192.168.0.4}</wsdl-host>
+            <endpoint-config name="Standard-Endpoint-Config"/>
+            <endpoint-config name="Recording-Endpoint-Config">
+                <pre-handler-chain name="recording-handlers" protocol-bindings="##SOAP11_HTTP ##SOAP11_HTTP_MTOM ##SOAP12_HTTP ##SOAP12_HTTP_MTOM">
+                    <handler name="RecordingHandler" class="org.jboss.ws.common.invocation.RecordingServerHandler"/>
+                </pre-handler-chain>
+            </endpoint-config>
+            <client-config name="Standard-Client-Config"/>
+        </subsystem>

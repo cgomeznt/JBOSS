@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="info" monitorInterval="500">
+	<Appenders>
+		<RollingFile name="FILE" filePattern="acsele-%d{MM-dd-yyyy}-%i.log.gz" 
+				fileName="acsele.log" append="false">
+			<PatternLayout pattern="(%d) [%-5p] [%t] - [%c] - %m%n"/>
+			<Policies>
+				<SizeBasedTriggeringPolicy size="20 MB"/>
+			</Policies>
+			<DefaultRolloverStrategy max="10"/>
+		</RollingFile>
+		<RollingFile name="EVALUATOR" filePattern="evaluator-%d{MM-dd-yyyy}-%i.log.gz" 
+				fileName="evaluator.log" append="false">
+			<PatternLayout pattern="(%d) [%-5p] [%t] - [%c] - %m%n"/>
+			<Policies>
+				<SizeBasedTriggeringPolicy size="10 MB"/>
+			</Policies>
+			<DefaultRolloverStrategy max="1"/>
+		</RollingFile>
+	</Appenders>
+	<Loggers>
+		<Logger name="net.sf.hibernate.util.ReflectHelper" level="error"/>
+		<Logger name="net.sf.hibernate.cfg.Binder" level="error"/>
+
+		<Logger name="com.consisint.acsele.util" level="error"/>
+		<Logger name="com.consisint.acsele.util.HibernateUtil" level="error"/>
+
+		<Logger name="com.consisint.acsele.util.evaluator" level="error" additivity="false" >
+			<AppenderRef ref="EVALUATOR"/>
+		</Logger>
+		
+		<Logger name="com.consisint.acsele.openapi.evaluator" level="error" additivity="false">
+			<AppenderRef ref="EVALUATOR"/>
+		</Logger>
+
+		<Root level="info">
+			<AppenderRef ref="FILE"/>
+		</Root>
+	</Loggers>
+</Configuration>

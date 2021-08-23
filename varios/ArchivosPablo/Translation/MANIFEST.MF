@@ -1,0 +1,3 @@
+Manifest-Version: 1.0
+Class-Path: WController.war/WEB-INF/classes WController.war/WEB-INF/lib/*
+
