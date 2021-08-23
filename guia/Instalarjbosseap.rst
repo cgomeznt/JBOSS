@@ -39,7 +39,7 @@ Verificamos la version, con la ruta absoluta en donde se instalo el java y el cu
 Descargamos el JBOSS EAP y lo instalamos
 +++++++++++++++++++++++++++++++++++++++++
 
-En este ejemplo fue la version 6.4 https://developers.redhat.com/products/eap/download/ .::
+En este ejemplo fue la version 6.4  https://developers.redhat.com/products/eap/download/ .::
 
 	# unzip jboss-eap-6.4.0.zip
 
