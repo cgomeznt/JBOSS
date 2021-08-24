@@ -1,30 +1,38 @@
 Crear un Java KeyStore File
 ===============================
 
+En este laboratorio se estara creando un archivo Java KeyStore el cuan tendrá la llave del certificado del servidor, un certificado del servidor y el certificado publico de la CA que firmo el certificado del servidor.
+
+Luego que se tenga el archivo Java KeyStore se va configurar el JBoss standalone para que utilice dicho Java KeyStore
+
+Crear un Java KeyStore File y firmarlo con una CA
+++++++++++++++++++++++++++++
+
 Información extraída de https://www.digicert.com/kb/csr-ssl-installation/tomcat-keytool.htm
 
 Crear un nuevo keystore::
 
-	# keytool -genkey -alias srvutils -keyalg RSA -keysize 2048 -storepass  changeitore.jksore keyst 
+	keytool -genkey -alias srvutils -keyalg RSA -keysize 2048 -storepass  changeit -keystore keystore.jks
+
 	¿Cuáles son su nombre y su apellido?
-	  [Unknown]:  Carlos Gomez
+	  [Unknown]:  srvutils.local
 	¿Cuál es el nombre de su unidad de organización?
-	  [Unknown]:  Sop Middleware
+	  [Unknown]:  Sop App
 	¿Cuál es el nombre de su organización?
-	  [Unknown]:  LTD Private
+	  [Unknown]:  LDT Private
 	¿Cuál es el nombre de su ciudad o localidad?
 	  [Unknown]:  DC
 	¿Cuál es el nombre de su estado o provincia?
 	  [Unknown]:  CCS
 	¿Cuál es el código de país de dos letras de la unidad?
 	  [Unknown]:  VE
-	¿Es correcto CN=Carlos Gomez, OU=Sop Middleware, O=LTD Private, L=DC, ST=CCS, C=VE?
+	¿Es correcto CN=srvutils.local, OU=Sop App, O=LDT Private, L=DC, ST=CCS, C=VE?
 	  [no]:  si
-
 
 	Introduzca la contraseña de clave para <srvutils>
 		(INTRO si es la misma contraseña que la del almacén de claves):  changeit
 	Volver a escribir la contraseña nueva: changeit
+
 
 
 Consultamos el archivo Java KeyStore
@@ -37,18 +45,18 @@ Consultamos el archivo Java KeyStore
 	Su almacén de claves contiene 1 entrada
 
 	Nombre de Alias: srvutils
-	Fecha de Creación: 23/08/2021
+	Fecha de Creación: 24/08/2021
 	Tipo de Entrada: PrivateKeyEntry
 	Longitud de la Cadena de Certificado: 1
 	Certificado[1]:
-	Propietario: CN=Carlos Gomez, OU=Sop Middleware, O=LTD Private, L=DC, ST=CCS, C=VE
-	Emisor: CN=Carlos Gomez, OU=Sop Middleware, O=LTD Private, L=DC, ST=CCS, C=VE
-	Número de serie: 47ea8d2d
-	Válido desde: Mon Aug 23 17:41:56 EDT 2021 hasta: Sun Nov 21 16:41:56 EST 2021
+	Propietario: CN=srvutils.local, OU=Sop App, O=LDT Private, L=DC, ST=CCS, C=VE
+	Emisor: CN=srvutils.local, OU=Sop App, O=LDT Private, L=DC, ST=CCS, C=VE
+	Número de serie: 2dfbb407
+	Válido desde: Tue Aug 24 13:12:54 EDT 2021 hasta: Mon Nov 22 12:12:54 EST 2021
 	Huellas digitales del Certificado:
-		 MD5: C5:12:CF:09:4C:EC:D9:AA:1B:FC:68:5B:56:60:25:9D
-		 SHA1: 3B:89:ED:23:87:A4:31:64:D4:7C:05:BF:BB:F3:7C:D1:B1:15:2D:E9
-		 SHA256: 07:17:78:3C:98:02:4D:0F:61:A0:EC:D7:20:5B:2B:4B:E0:5E:5D:4F:97:2C:30:EA:66:70:6E:FB:79:11:36:68
+		 MD5: 92:75:FB:0F:B4:C3:39:E7:95:35:90:97:7B:B3:82:21
+		 SHA1: 06:39:AA:FF:E8:C9:4B:88:F5:59:39:2A:16:B1:6B:B8:6A:92:E4:45
+		 SHA256: B7:E4:A7:28:B2:B5:63:5B:A7:E7:4E:DD:69:B6:7B:5C:35:1A:67:03:5C:DA:69:AA:3C:EC:6B:C9:0A:EE:9F:D9
 		 Nombre del Algoritmo de Firma: SHA256withRSA
 		 Versión: 3
 
@@ -57,8 +65,8 @@ Consultamos el archivo Java KeyStore
 	#1: ObjectId: 2.5.29.14 Criticality=false
 	SubjectKeyIdentifier [
 	KeyIdentifier [
-	0000: EC 2F B9 B0 61 E7 EF 2C   1A 56 50 E6 8C 95 7D 7D  ./..a..,.VP.....
-	0010: C4 2B D6 5F                                        .+._
+	0000: 27 A3 43 D2 CE 64 A6 DD   45 C7 C6 02 D3 AA C3 26  '.C..d..E......&
+	0010: E1 F9 F1 70                                        ...p
 	]
 	]
 
@@ -66,6 +74,7 @@ Consultamos el archivo Java KeyStore
 
 	*******************************************
 	*******************************************
+
 
 
 Crear el request del certificado desde el nuevo keystore::
@@ -77,13 +86,14 @@ El archivo request creado CSR **srvutils.csr** deberá ser enviado a la CA que l
 
 ::
 
-	# openssl x509 -req -days 185 -extfile conf/srvutils.conf -extensions v3_req -CA certs/CA_empresa.crt -CAkey private/CA_empresa.key -CAserial ca.srl -CAcreateserial -in request/srvutils.csr -out newcerts/srvutils.crt
+	openssl x509 -req -days 185 -extfile conf/srvutils.conf -extensions v3_req -CA certs/CA_empresa.crt -CAkey private/CA_empresa.key -CAserial ca.srl -CAcreateserial -in request/srvutils.csr -out newcerts/srvutils.crt
+
 	Signature ok
 	subject=/C=VE/ST=CCS/L=DC/O=LTD Private/OU=Sop Middleware/CN=Carlos Gomez
 	Getting CA Private Key
 	Enter pass phrase for private/CA_empresa.key:Venezuela21
 
-Lo anterior va generar el archivo (SSL CRT) del certificado y ese lo debemos enviar al igual que el (CRT de la CA), para que puedan continuar con el proceso.
+Lo anterior se ejecuta en un servidor que tengo configurado la Entidad Certificadora y va generar el archivo (SSL CRT) del certificado y ese lo debemos esperar nos entreguen al igual que el (CRT de la CA), para que puedan continuar con el proceso.
 
 La siguiente Información es extraída de https://knowledge.digicert.com/quovadis/ssl-certificates/ssl-installation/how-do-i-install-an-ssl-certificate-into-jboss.html
 
@@ -153,18 +163,18 @@ Consultamos el archivo Java KeyStore y debemos observar tres (3) entradas, la ll
 	Su almacén de claves contiene 3 entradas
 
 	Nombre de Alias: srvutils
-	Fecha de Creación: 23/08/2021
+	Fecha de Creación: 24/08/2021
 	Tipo de Entrada: PrivateKeyEntry
 	Longitud de la Cadena de Certificado: 1
 	Certificado[1]:
-	Propietario: CN=Carlos Gomez, OU=Sop Middleware, O=LTD Private, L=DC, ST=CCS, C=VE
-	Emisor: CN=Carlos Gomez, OU=Sop Middleware, O=LTD Private, L=DC, ST=CCS, C=VE
-	Número de serie: 47ea8d2d
-	Válido desde: Mon Aug 23 17:41:56 EDT 2021 hasta: Sun Nov 21 16:41:56 EST 2021
+	Propietario: CN=srvutils.local, OU=Sop App, O=LDT Private, L=DC, ST=CCS, C=VE
+	Emisor: CN=srvutils.local, OU=Sop App, O=LDT Private, L=DC, ST=CCS, C=VE
+	Número de serie: 2dfbb407
+	Válido desde: Tue Aug 24 13:12:54 EDT 2021 hasta: Mon Nov 22 12:12:54 EST 2021
 	Huellas digitales del Certificado:
-		 MD5: C5:12:CF:09:4C:EC:D9:AA:1B:FC:68:5B:56:60:25:9D
-		 SHA1: 3B:89:ED:23:87:A4:31:64:D4:7C:05:BF:BB:F3:7C:D1:B1:15:2D:E9
-		 SHA256: 07:17:78:3C:98:02:4D:0F:61:A0:EC:D7:20:5B:2B:4B:E0:5E:5D:4F:97:2C:30:EA:66:70:6E:FB:79:11:36:68
+		 MD5: 92:75:FB:0F:B4:C3:39:E7:95:35:90:97:7B:B3:82:21
+		 SHA1: 06:39:AA:FF:E8:C9:4B:88:F5:59:39:2A:16:B1:6B:B8:6A:92:E4:45
+		 SHA256: B7:E4:A7:28:B2:B5:63:5B:A7:E7:4E:DD:69:B6:7B:5C:35:1A:67:03:5C:DA:69:AA:3C:EC:6B:C9:0A:EE:9F:D9
 		 Nombre del Algoritmo de Firma: SHA256withRSA
 		 Versión: 3
 
@@ -173,8 +183,8 @@ Consultamos el archivo Java KeyStore y debemos observar tres (3) entradas, la ll
 	#1: ObjectId: 2.5.29.14 Criticality=false
 	SubjectKeyIdentifier [
 	KeyIdentifier [
-	0000: EC 2F B9 B0 61 E7 EF 2C   1A 56 50 E6 8C 95 7D 7D  ./..a..,.VP.....
-	0010: C4 2B D6 5F                                        .+._
+	0000: 27 A3 43 D2 CE 64 A6 DD   45 C7 C6 02 D3 AA C3 26  '.C..d..E......&
+	0010: E1 F9 F1 70                                        ...p
 	]
 	]
 
@@ -185,7 +195,7 @@ Consultamos el archivo Java KeyStore y debemos observar tres (3) entradas, la ll
 
 
 	Nombre de Alias: root
-	Fecha de Creación: 23/08/2021
+	Fecha de Creación: 24/08/2021
 	Tipo de Entrada: trustedCertEntry
 
 	Propietario: EMAILADDRESS=root@personal.local, CN=PERSONAL, OU=Sop App, O=Default Company Ltd, L=CCS, ST=DC, C=VE
@@ -230,17 +240,17 @@ Consultamos el archivo Java KeyStore y debemos observar tres (3) entradas, la ll
 
 
 	Nombre de Alias: servercrt
-	Fecha de Creación: 23/08/2021
+	Fecha de Creación: 24/08/2021
 	Tipo de Entrada: trustedCertEntry
 
-	Propietario: CN=Carlos Gomez, OU=Sop Middleware, O=LTD Private, L=DC, ST=CCS, C=VE
+	Propietario: CN=srvutils.local, OU=Sop App, O=LDT Private, L=DC, ST=CCS, C=VE
 	Emisor: EMAILADDRESS=root@personal.local, CN=PERSONAL, OU=Sop App, O=Default Company Ltd, L=CCS, ST=DC, C=VE
-	Número de serie: b539e7db965032de
-	Válido desde: Mon Aug 23 17:45:32 EDT 2021 hasta: Thu Feb 24 16:45:32 EST 2022
+	Número de serie: b539e7db965032df
+	Válido desde: Tue Aug 24 13:17:50 EDT 2021 hasta: Fri Feb 25 12:17:50 EST 2022
 	Huellas digitales del Certificado:
-		 MD5: 9C:26:A9:B5:BC:E2:63:64:C1:28:26:50:E4:00:1E:2D
-		 SHA1: D8:8A:A9:90:25:B8:1E:8C:00:96:64:8B:C0:BB:01:B3:7E:1A:55:08
-		 SHA256: 04:36:92:C7:3B:85:A0:02:51:0A:63:A2:34:60:DD:EC:BB:25:D3:D7:DE:AF:13:28:81:1F:AF:6E:C4:B8:28:16
+		 MD5: 6C:0F:79:22:B2:44:4B:FD:EE:D1:47:2D:70:30:96:BD
+		 SHA1: 54:8D:B8:D2:52:88:77:BA:0E:C0:5D:FA:40:2A:1E:ED:FA:15:B9:4B
+		 SHA256: 2A:6C:59:14:EB:BD:40:1F:E6:26:23:EC:A5:E8:AC:E3:3E:0F:A4:0B:F3:33:77:EC:BD:22:B6:28:85:BD:37:4F
 		 Nombre del Algoritmo de Firma: SHA256withRSA
 		 Versión: 3
 
@@ -270,6 +280,60 @@ Consultamos el archivo Java KeyStore y debemos observar tres (3) entradas, la ll
 
 	*******************************************
 	*******************************************
+
+
+Ya con esto tenemos nuestro archivo Java KeyStore listo....!!!
+
+
+Asignar el nuevo Java KeyStore en JBOSS
+++++++++++++++++++++++++++++++++++++++++
+
+Esto aplica par JBoss 7.x standalone. ir a la ruta del root standalone::
+
+	cd /opt/jboss-eap-7.4/standalone/configuration/
+
+Crear un respaldo del archivo standalone.xml::
+
+	cp  standalone.xml standalone.xml.original
+
+Editar el archivo standalone.xml y colocar la siguiente información dentro del TAG  <security-realms>::
+
+
+	<security-realms>
+	    <security-realm name="CertificateRealm">
+		<server-identities>
+		    <ssl>
+		        <keystore path="keystore.jks" relative-to="jboss.server.config.dir" keystore-password="changeit"/>
+		    </ssl>
+		</server-identities>
+		<authentication>
+		    <truststore path="truststore.jks" relative-to="jboss.server.config.dir" keystore-password="changeit"/>
+		</authentication>
+	    </security-realm>
+	</security-realms>
+
+En el mismo archivo standalone.xml buscar el TAG de <subsystem xmlns="urn:jboss:domain:undertow> buscar esta linea::
+
+	<https-listener name="https" socket-binding="https" security-realm="ApplicationRealm" enable-http2="true"/>
+
+y remplazarla por esta otra::
+
+	<https-listener name="https" secure="true" enabled-protocols="TLSv1.1,TLSv1.2" security-realm="CertificateRealm" socket-binding="https"/>
+
+Entonces quedaria algo así::
+
+	<subsystem xmlns="urn:jboss:domain:undertow:3.1">
+	    <buffer-cache name="default"/>
+	    <server name="default-server">
+		<http-listener name="default" socket-binding="http" redirect-socket="https"/>
+		<https-listener name="https" secure="true" enabled-protocols="TLSv1.1,TLSv1.2" security-realm="CertificateRealm" socket-binding="https"/>
+
+
+listo ya con esto tenemos configurado JBoss EAP 7.x para que utilice certificados, solo resta realizar los Troubleshooting
+
+En un navegador abrir y colocar la siguiente URL https://192.168.1.20:8443 y podremos ver que levanta con el certificado, también podemos hacer la consulta con openssl de la siguiente forma::
+
+	openssl s_client -connect 192.168.1.20:8443
 
 
 
