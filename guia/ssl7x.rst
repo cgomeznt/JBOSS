@@ -35,9 +35,9 @@ Crear un nuevo keystore::
 
 
 
-Consultamos el archivo Java KeyStore
+Consultamos el archivo Java KeyStore::
 
-	# keytool -list -v -keystore ./keystore.jks -storepass  changeit
+	keytool -list -v -keystore ./keystore.jks -storepass  changeit
 
 	Tipo de Almacén de Claves: JKS
 	Proveedor de Almacén de Claves: SUN
@@ -320,7 +320,7 @@ y remplazarla por esta otra::
 
 	<https-listener name="https" secure="true" enabled-protocols="TLSv1.1,TLSv1.2" security-realm="CertificateRealm" socket-binding="https"/>
 
-Entonces quedaria algo así::
+Entonces quedaría algo así::
 
 	<subsystem xmlns="urn:jboss:domain:undertow:3.1">
 	    <buffer-cache name="default"/>
