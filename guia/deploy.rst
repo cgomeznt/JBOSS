@@ -21,10 +21,6 @@ Verificamos en la URL http://192.168.1.210:8080/sample/
 .. figure:: ../images/deploy/01.png
 
 
-
-
-
-
 Si en la ruta /opt/jboss-eap-6.4/standalone/deployments/ al archivo sample.war.deployed le cambiamos al nombre a sample.war.undeployed, dejamos de tener la aplicación desplegada.::
 
 
@@ -53,4 +49,18 @@ Si le volmemos a colocar el deploy, pues se despliega la aplicación nuevamente.
 
 
 
+
+Desplegar un EAR o WAR con CLI
+================================
+
+Conectar al CLI, luego conectar al servidor y por ultimo desplegar::
+
+	./jboss-cli.sh 
+	connectYou are disconnected at the moment. Type 'connect' to connect to the server or 'help' for the list of supported commands.
+
+	[disconnected /] connect 192.168.1.20
+	[standalone@192.168.1.20:9990 /] connect 192.168.1.20:9990
+
+	[standalone@192.168.1.20:9990 /] deploy /root/sample.war
+	[standalone@192.168.1.20:9990 /] 
 
