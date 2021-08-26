@@ -22,3 +22,6 @@ Sino podemos suministrar a donde nos queremos conectar::
 	You are disconnected at the moment. Type 'connect' to connect to the server
 	[disconnected /] connect 192.168.0.10:9990
 	Connected to standalone controller at 192.168.0.1:9990
+
+
+https://access.redhat.com/documentation/en-us/red_hat_jboss_enterprise_application_platform/7.0/html-single/management_cli_guide/index
