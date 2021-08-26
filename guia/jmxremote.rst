@@ -10,7 +10,7 @@ Cuando inicie el JBoss EAP, enlace la interfaz administrativa con la IP que usar
 
 	$ JBOSS_HOME/bin/standalone.sh -bmanagement=IP_ADDRESS
 
-Use la siguiente URI con el usuario administrador en un JVM monitoring tool para conectar al JBoss EAP server. La URI abajo es usada como porto por default para la administración (9990).
+Use la siguiente URI con el usuario administrador en un JVM monitoring tool para conectar al JBoss EAP server. La URI abajo es usada como porto por default para la administración (9990).::
 
 	service:jmx:remote+http://IP_ADDRESS:9990
 
@@ -30,5 +30,7 @@ leer el archivo $JBOSS_HOME/bin/client/README-CLI-JCONSOLE.txt, pero cuidado que
 
 
 NOTA:MONITORING THE JBOSS EAP / WILDFLY APPLICATION SERVER WITH THE COMMAND LINE INTERFACE (CLI) y NON-INTERACTIVE MODE
+
 https://blog.akquinet.de/2014/09/15/monitoring-the-jboss-eap-wildfly-application-server-with-the-command-line-interface-cli/
+
 https://github.com/wildfly/wildfly/blob/main/docs/src/main/asciidoc/_admin-guide/Command_Line_Interface.adoc
