@@ -6,6 +6,7 @@
 * [Instalar JBOSS 7.1.0 como Dominio todo en un solo equipo](guia/instalar_JBOSS7_domain.rst)
 * [Instalar JBOSS 7.0.0 como Dominio DC remoto](guia/instalar_JBOSS7_domaindcremote.rst)
 * [Start & Stop JBOSS](guia/startstop.rst)
+* [Systemctl service JBOSS](guia/systemctlservice.rst)
 * [Agregar Usuario Administrador al JBOSS EAP](guia/adduseradmin.rst)
 * [Running the CLI](guia/runningcli.rst)
 * [Desplegar un EAR o WAR ](guia/deploy.rst)
