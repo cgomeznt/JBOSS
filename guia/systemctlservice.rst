@@ -13,17 +13,17 @@ Configurar JBoss EAP con systemctl
 
 	[Service]
 	Type=forking
-	Restart=no
+	RestartSec=10
+	Restart=always
 	TimeoutSec=5min
 	IgnoreSIGPIPE=no
 	KillMode=process
 	GuessMainPID=no
 	RemainAfterExit=no
-
 	Environment="JBOSS_HOME=/opt/jboss-eap-7.4"
 	Environment="JBOSS_USER=jboss"
-
 	PIDFile=/var/run/jboss-eap/jboss-eap.pid
 	ExecStart=/opt/jboss-eap-7.4/bin/init.d/jboss-eap-rhel.sh start
 	ExecStop=/opt/jboss-eap-7.4/bin/init.d/jboss-eap-rhel.sh stop
+
 
