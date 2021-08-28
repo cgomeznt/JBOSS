@@ -12,6 +12,7 @@
 * [Desplegar un EAR o WAR ](guia/deploy.rst)
 * [Configurar SSL en 7.x](guia/ssl7x.rst)
 * [Redirecting HTTP to HTTPS in JBoss EAP 7](guia/redirecthttptohttps.rst)
+* [Run JBoss non-root](guia/non-root.rst)
 * [Habilitar JMX remote](guia/jmxremote.rst)
 * [Configurando parametros del JVM](guia/jvmsetting.rst)
 * [Configurar y probar un Datasource ](guia/creartestdatasource.rst)
