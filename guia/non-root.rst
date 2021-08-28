@@ -1,4 +1,4 @@
-Run Tomcat non-root
+Run JBoss non-root
 ====================
 
 Si esta ejecutando JBoss como non-root, y cambiaron la configuracion para que JBoss escuche por los puertos 80 y/o 443, no podra iniciar por el puerto 80 y el 443, le arrojara este error::
