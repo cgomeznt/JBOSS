@@ -21,7 +21,7 @@ Instalamos el paquete authbind, para CentOS 7.x::
 
 	wget https://s3.amazonaws.com/aaronsilber/public/authbind-2.1.1-0.1.x86_64.rpm
 
-Una vez que se haya instalado authbind, ejecute lo siguiente según los puertos en los que desee que Tomcat escuche::
+Una vez que se haya instalado authbind, ejecute lo siguiente según los puertos en los que desee que JBoss escuche::
 
 	sudo touch /etc/authbind/byport/80
 	sudo chmod 500 /etc/authbind/byport/80
