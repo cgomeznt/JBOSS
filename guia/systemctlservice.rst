@@ -20,10 +20,17 @@ Configurar JBoss EAP con systemctl
 	KillMode=process
 	GuessMainPID=no
 	RemainAfterExit=no
+
 	Environment="JBOSS_HOME=/opt/jboss-eap-7.4"
 	Environment="JBOSS_USER=jboss"
+
 	PIDFile=/var/run/jboss-eap/jboss-eap.pid
 	ExecStart=/opt/jboss-eap-7.4/bin/init.d/jboss-eap-rhel.sh start
 	ExecStop=/opt/jboss-eap-7.4/bin/init.d/jboss-eap-rhel.sh stop
+
+	[Install]
+	WantedBy=multi-user.target
+
+NOTA: Tambien pueden utilizar esta ruta /usr/lib/systemd/system/jboss-eap.service
 
 
