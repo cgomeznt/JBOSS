@@ -25,3 +25,8 @@ Sino podemos suministrar a donde nos queremos conectar::
 
 
 https://access.redhat.com/documentation/en-us/red_hat_jboss_enterprise_application_platform/7.0/html-single/management_cli_guide/index
+
+
+https://access.redhat.com/solutions/383573
+
+https://access.redhat.com/documentation/pt-br/red_hat_jboss_fuse/6.3/html/administration_and_configuration_on_jboss_eap/undeploy_an_application_in_a_standalone_server_using_the_management_cli1
