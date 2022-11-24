@@ -1,6 +1,16 @@
 Configurar JBoss EAP con systemctl
 =====================================
 
+Antes de crear el archivo /etc/systemd/system/jboss-eap.service, se debe contemplar lo siguiente::
+
+Tener creado el usuario de jboss.
+
+Que la carpeta /var/run/jboss-eap/ el propietario sea jboss.
+
+Que la carpeta /var/log/jboss-eap/ el propietario sea jboss.
+
+Tener configurado todas las variables de entorno y en especial JAVA_HOME
+
 ::
 
 	vi /etc/systemd/system/jboss-eap.service
@@ -21,6 +31,7 @@ Configurar JBoss EAP con systemctl
 	GuessMainPID=no
 	RemainAfterExit=no
 
+	Environment="JAVA_HOME=/usr/java/jdk-12/bin/java"
 	Environment="JBOSS_HOME=/opt/jboss-eap-7.4"
 	Environment="JBOSS_USER=jboss"
 
